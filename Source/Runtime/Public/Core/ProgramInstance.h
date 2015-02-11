@@ -2,8 +2,8 @@
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
-#include "Runtime/Public/Core/GameInstance.h"
 #include "Runtime/Public/Core/Window.h"
+#include "Runtime/Public/Core/Array.h"
 
 /*
 ProgramInstance represents a single instance of the program.  It acts as
@@ -22,18 +22,21 @@ public:
 	/* Destructor. */
 	~FProgramInstance();
 
+	/* Function which creates a game in the specified window. */
+	class FGameInstance* AddGameInstance(FWindow* InWindow);
+
 #if WINDOWS
-	bool ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+	/* The main program execution loop when running on Windows. */
+	int ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
 	/* Function which creates a window not tied to a game instance. */
 	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 #endif
 
 private:
-	/* A non-GameInstance window. */
-	FWindow* Window;
+	/* An array of game instances running in the program. */
+	TArray<FGameInstance> GameInstances;
 
-	/* The actual GameInstance. */
-	//@TODO Actually make and manage a game instance.
-	FGameInstance* GameInstance;
+	/* An array of windows running in the program. */
+	TArray<FWindow> Windows;
 };

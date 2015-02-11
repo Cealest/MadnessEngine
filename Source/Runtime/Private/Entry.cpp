@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
+#if WITH_EDITOR
 	// Initialize the program.
 	if (GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
 	{
@@ -22,6 +23,17 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			// Wait for execution to stop.
 		}
 	}
+#else
+	// Initialize the game.
+	if (GProgramInstance.AddGameInstance(GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow)))
+	{
+		// Begin the main execution loop.
+		while (GProgramInstance.ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
+		{
+			// Wait for execution to stop.
+		}
+	}
+#endif
 
 	return GProgramInstance.ShutdownReason;
 }

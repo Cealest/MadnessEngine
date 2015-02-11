@@ -1,46 +1,78 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
+#include "Runtime/Public/Core/GameInstance.h"
 
 FProgramInstance::FProgramInstance()
 {
 	ShutdownReason = 0;
-	Window = nullptr;
-	GameInstance = nullptr;
+	GameInstances.Empty();
+	Windows.Empty();
 }
 
 FProgramInstance::~FProgramInstance()
 {
-	if (Window)
+	GameInstances.Empty();
+	Windows.Empty();
+}
+
+FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
+{
+	if (InWindow)
 	{
-		delete Window;
+		// No window, failed!
+		return nullptr;
 	}
-	if (GameInstance)
+	FGameInstance* NewGameInstance = new FGameInstance();
+	if (NewGameInstance)
 	{
-		delete GameInstance;
+		if (NewGameInstance->Init(InWindow))
+		{
+			GameInstances.Add(*NewGameInstance);
+			if (!Windows.Contains(*InWindow))
+			{
+				Windows.Add(*InWindow);
+			}
+			return NewGameInstance;
+		}
+		else
+		{
+			// Failed to initialize game instance
+			delete NewGameInstance;
+		}
 	}
+	// Somehow failed to make the game instance
+	return nullptr;
 }
 
 #if WINDOWS
-bool FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	if (Window)
+	for (unsigned int i = 0; i < Windows.Num(); ++i)
 	{
-		return Window->WindowExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+		int returnVal = ShutdownReason;
+		if (Windows.Get(i))
+		{
+			ShutdownReason = Windows.Get(i)->WindowExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+		}
 	}
-	// No window
-	ShutdownReason = 1;
-	return false;
+
+	return ShutdownReason;
 }
 
 FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	if (!Window)
+	FWindow* NewWindow = new FWindow();
+	if (NewWindow)
 	{
-		Window = new FWindow();
-		if (Window)
+		if (NewWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
 		{
-			Window->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-			return Window;
+			Windows.Add(*NewWindow);
+			return NewWindow;
+		}
+		else
+		{
+			// Window initialization failed
+			delete NewWindow;
 		}
 	}
 	return nullptr;

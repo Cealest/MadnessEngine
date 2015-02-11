@@ -3,11 +3,19 @@
 #ifndef GLOBAL_DEFINITIONS
 #define GLOBAL_DEFINITIONS
 
-/* Current engine version. */
+/* Engine information. */
 #define TITLE "Madness Engine v0.01"
 #define SHORT_TITLE "MAD"
 #define VERSION 0.01f
-/* If we are compiling for Windows. */
+#define WITH_EDITOR 1
+/* Target platform. */
 #define WINDOWS 1
+/* Which graphics API we're using. */
+#define DIRECTX 1
+#define OPENGL 0
+/* What networking structure we're using. */
+#define SERVER 0
+#define CLIENT 0
+#define PEER_TO_PEER 0
 
 #endif

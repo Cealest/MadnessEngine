@@ -15,5 +15,13 @@ public:
 	/* Destructor. */
 	~FGameInstance();
 
+	/* Initializes the game instance and gives it a window. */
+	virtual bool Init(FWindow* Window);
+
+	/* Returns the window if one exists.  If this return nullptr, the instance probably hasn't been initialized. */
+	virtual FWindow* GetWindow() const;
+
+protected:
+	/* The window for this game instance. */
 	FWindow* Window;
 };
