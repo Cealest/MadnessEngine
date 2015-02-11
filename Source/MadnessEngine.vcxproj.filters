@@ -14,18 +14,45 @@
     <Filter Include="Runtime\Private">
       <UniqueIdentifier>{02f12336-e437-4140-9fff-07a3508b386d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Private\Core">
+      <UniqueIdentifier>{fd5dec12-8e53-4cb8-8d23-056b981364e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Core">
+      <UniqueIdentifier>{78ac16a0-613c-42ae-b8dc-f08769c055db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Runtime\Public\Entry.h">
-      <Filter>Runtime\Public</Filter>
-    </ClInclude>
     <ClInclude Include="Runtime\Public\Definitions.h">
       <Filter>Runtime\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Core\GameInstance.h">
+      <Filter>Runtime\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Core\ProgramInstance.h">
+      <Filter>Runtime\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Core\Window.h">
+      <Filter>Runtime\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Core\Array.h">
+      <Filter>Runtime\Public\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
       <Filter>Runtime\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Core\GameInstance.cpp">
+      <Filter>Runtime\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Core\ProgramInstance.cpp">
+      <Filter>Runtime\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Core\Window.cpp">
+      <Filter>Runtime\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Core\Array.cpp">
+      <Filter>Runtime\Private\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
