@@ -26,6 +26,12 @@
     <Filter Include="Runtime\Public\Templates">
       <UniqueIdentifier>{ebc955d4-6efe-49d2-9371-280c7b22854b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Private\Graphics">
+      <UniqueIdentifier>{498868d1-9a61-405e-8b62-8c05954aafbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Graphics">
+      <UniqueIdentifier>{6eaf4c47-9007-4234-9e79-55c868813e4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -43,6 +49,9 @@
     <ClInclude Include="Runtime\Public\Templates\Array.h">
       <Filter>Runtime\Public\Templates</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\RenderContext.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -59,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Runtime\Private\Templates\Array.cpp">
       <Filter>Runtime\Private\Templates</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

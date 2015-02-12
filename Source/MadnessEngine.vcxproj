@@ -70,22 +70,29 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(DXSDK_DIR)\Include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(DXSDK_DIR)\Include;$(SolutionDir);$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)..\Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <LibraryPath>$(DXSDK_DIR)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(DXSDK_DIR)\Include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(DXSDK_DIR)\Include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -156,6 +163,7 @@
     <ClInclude Include="Runtime\Public\Core\ProgramInstance.h" />
     <ClInclude Include="Runtime\Public\Core\Window.h" />
     <ClInclude Include="Runtime\Public\Definitions.h" />
+    <ClInclude Include="Runtime\Public\Graphics\RenderContext.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +171,7 @@
     <ClCompile Include="Runtime\Private\Core\ProgramInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\Window.cpp" />
     <ClCompile Include="Runtime\Private\Entry.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp" />
     <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

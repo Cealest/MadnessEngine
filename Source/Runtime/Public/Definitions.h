@@ -10,6 +10,9 @@
 #define WITH_EDITOR 1
 /* Target platform. */
 #define WINDOWS 1
+#if WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#endif
 /* Which graphics API we're using. */
 #define DIRECTX 1
 #define OPENGL 0
