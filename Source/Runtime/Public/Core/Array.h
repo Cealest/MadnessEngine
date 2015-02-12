@@ -13,6 +13,10 @@ public:
 	TArray();
 	/* Destructor. */
 	~TArray();
+	/* Copy constructor. */
+	TArray(const TArray &Array);
+	/* Assignment operator. */
+	TArray& operator = (const TArray &Array);
 	
 	/* Returns the number of elements in the array. */
 	unsigned int Num() const;
@@ -22,6 +26,9 @@ public:
 
 	/* Returns an element, if any, in the array for the given index. */
 	Type* Get(unsigned int Index) const;
+
+	/* Sets the size of the array. */
+	void SetSize(unsigned int Size);
 
 	/* Returns true if this array is holding the given element. */
 	bool Contains(Type& InItem) const;
@@ -83,6 +90,42 @@ TArray<Type>::~TArray()
 }
 
 template<typename Type>
+TArray<Type>::TArray(const TArray &Array)
+{
+	Elements = (Type*)malloc(sizeof(Type) * Array.DataSize);
+	if (!Elements)
+	{
+		// Failed to allocate memory.
+		throw 0;
+	}
+
+	memcpy(Elements, Array.Elements, sizeof(Type) * Array.DataSize);
+	DataSize = Array.DataSize;
+	ArraySize = Array.ArraySize;
+}
+
+template<typename Type>
+TArray<Type>& TArray<Type>::operator = (const TArray &Array)
+{
+	// Just stop if it's the same object.
+	if (this == &Array)
+	{
+		return *this;
+	}
+
+	if (Array.ArraySize == 0)
+	{
+		// The array we're copying is empty, just empty this one.
+		Empty();
+	}
+
+	SetSize(Array.ArraySize);
+
+	memcpy(Elements, Array.Elements, sizeof(Type*) * Array.ArraySize);
+	return *this;
+}
+
+template<typename Type>
 unsigned int TArray<Type>::Num() const
 {
 	return ArraySize;
@@ -119,6 +162,32 @@ Type* TArray<Type>::Get(unsigned int Index) const
 	}
 
 	return &Elements[Index];
+}
+
+template<typename Type>
+void TArray<Type>::SetSize(unsigned int Size)
+{
+	ArraySize = Size;
+
+	if (ArraySize != 0)
+	{
+		// Resize the array if required.
+		if ((ArraySize > DataSize) || (ArraySize < DataSize / 2))
+		{
+			DataSize = ArraySize;
+			Elements = (Type*)realloc(Elements, sizeof(Type) * ArraySize);
+
+			if (!Elements)
+			{
+				// Failed to allocate memory.
+				throw 0;
+			}
+		}
+	}
+	else
+	{
+		Empty();
+	}
 }
 
 template<typename Type>

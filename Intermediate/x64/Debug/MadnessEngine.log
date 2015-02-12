@@ -1,11 +1,9 @@
-﻿Build started 2/11/2015 4:05:16 PM.
+﻿Build started 2/11/2015 4:33:47 PM.
      1>Project "C:\MadnessEngine\MadnessEngine\Source\MadnessEngine.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\MadnessEngine\MadnessEngine\Source\..\Intermediate\x64\Debug\\" /Fd"C:\MadnessEngine\MadnessEngine\Source\..\Intermediate\x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Runtime\Private\Core\Array.cpp Runtime\Private\Core\GameInstance.cpp Runtime\Private\Core\ProgramInstance.cpp Runtime\Private\Core\Window.cpp Runtime\Private\Entry.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\MadnessEngine\MadnessEngine\Source\..\Intermediate\x64\Debug\\" /Fd"C:\MadnessEngine\MadnessEngine\Source\..\Intermediate\x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Runtime\Private\Core\Array.cpp Runtime\Private\Core\ProgramInstance.cpp Runtime\Private\Entry.cpp
          Entry.cpp
-         Window.cpp
          ProgramInstance.cpp
-         GameInstance.cpp
          Array.cpp
          Generating Code...
        Link:
@@ -19,4 +17,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.83
+Time Elapsed 00:00:00.79
