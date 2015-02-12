@@ -3,7 +3,7 @@
 
 #include "Runtime/Public/Definitions.h"
 #include "Runtime/Public/Core/Window.h"
-#include "Runtime/Public/Core/Array.h"
+#include "Runtime/Public/Templates/Array.h"
 
 /*
 ProgramInstance represents a single instance of the program.  It acts as

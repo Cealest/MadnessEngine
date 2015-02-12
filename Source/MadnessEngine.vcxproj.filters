@@ -20,6 +20,12 @@
     <Filter Include="Runtime\Public\Core">
       <UniqueIdentifier>{78ac16a0-613c-42ae-b8dc-f08769c055db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Private\Templates">
+      <UniqueIdentifier>{79878a89-4938-4a66-b79a-d624f1e32a9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Templates">
+      <UniqueIdentifier>{ebc955d4-6efe-49d2-9371-280c7b22854b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -34,8 +40,8 @@
     <ClInclude Include="Runtime\Public\Core\Window.h">
       <Filter>Runtime\Public\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Runtime\Public\Core\Array.h">
-      <Filter>Runtime\Public\Core</Filter>
+    <ClInclude Include="Runtime\Public\Templates\Array.h">
+      <Filter>Runtime\Public\Templates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,8 +57,8 @@
     <ClCompile Include="Runtime\Private\Core\Window.cpp">
       <Filter>Runtime\Private\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Runtime\Private\Core\Array.cpp">
-      <Filter>Runtime\Private\Core</Filter>
+    <ClCompile Include="Runtime\Private\Templates\Array.cpp">
+      <Filter>Runtime\Private\Templates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

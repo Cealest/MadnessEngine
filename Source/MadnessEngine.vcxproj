@@ -152,18 +152,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Runtime\Public\Core\Array.h" />
     <ClInclude Include="Runtime\Public\Core\GameInstance.h" />
     <ClInclude Include="Runtime\Public\Core\ProgramInstance.h" />
     <ClInclude Include="Runtime\Public\Core\Window.h" />
     <ClInclude Include="Runtime\Public\Definitions.h" />
+    <ClInclude Include="Runtime\Public\Templates\Array.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Runtime\Private\Core\Array.cpp" />
     <ClCompile Include="Runtime\Private\Core\GameInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\ProgramInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\Window.cpp" />
     <ClCompile Include="Runtime\Private\Entry.cpp" />
+    <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
