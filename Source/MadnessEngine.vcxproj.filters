@@ -52,6 +52,9 @@
     <ClInclude Include="Runtime\Public\Graphics\RenderContext.h">
       <Filter>Runtime\Public\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Templates\RingBuffer.h">
+      <Filter>Runtime\Public\Templates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">

@@ -165,6 +165,7 @@
     <ClInclude Include="Runtime\Public\Definitions.h" />
     <ClInclude Include="Runtime\Public\Graphics\RenderContext.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
+    <ClInclude Include="Runtime\Public\Templates\RingBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Core\GameInstance.cpp" />

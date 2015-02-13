@@ -34,7 +34,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		}
 	}
 #endif
-
 	return GProgramInstance.ShutdownReason;
 }
 #endif
