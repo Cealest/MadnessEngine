@@ -10,7 +10,6 @@ ProgramInstance represents a single instance of the program.  It acts as
 a static global wrapper to abstractly interact with the target platform.
 There should only be one ProgramInstance per program.
 */
-//@TODO Make dynamic arrays for both the Window and GameInstance members.
 class FProgramInstance
 {
 public:
@@ -22,21 +21,50 @@ public:
 	/* Destructor. */
 	~FProgramInstance();
 
+	/* Initializes the program. */
+	bool Init();
+
 	/* Function which creates a game in the specified window. */
 	class FGameInstance* AddGameInstance(FWindow* InWindow);
 
+	/* Assigns ShutdownReason */
+	void ExecuteShutdown(int Reason);
+
+	/* Cleans up the program after the program has started exiting. */
+	void Cleanup();
+
+	/* Retrieves the handle for the program's input. */
+	class FInputHandle* GetInputHandle();
+
 #if WINDOWS
+	/* Distributes the Windows message to the active window. */
+	static LRESULT CALLBACK HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam);
+
 	/* The main program execution loop when running on Windows. */
 	int ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
 	/* Function which creates a window not tied to a game instance. */
-	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height);
 #endif
 
 private:
+	/* True if a shutdown was requested. */
+	bool bShutdown;
+
 	/* An array of game instances running in the program. */
 	TArray<FGameInstance> GameInstances;
 
 	/* An array of windows running in the program. */
 	TArray<FWindow> Windows;
+
+	/* Which window is currently active. */
+	FWindow* ActiveWindow;
 };
+
+#ifdef WINDOWS
+/* Windows callback procedure. */
+static LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPARAM lParam);
+#endif
+
+/* Global program instance. */
+static FProgramInstance& GProgramInstance = FProgramInstance();

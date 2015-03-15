@@ -16,9 +16,15 @@
 /* Which graphics API we're using. */
 #define DIRECTX 1
 #define OPENGL 0
+/* Graphics settings. */
+#define FULLSCREEN 0
+#define SHOWMOUSE 1
 /* What networking structure we're using. */
 #define SERVER 0
 #define CLIENT 0
 #define PEER_TO_PEER 0
+/* Input settings. */
+#define KEYBOARD 1
+#define KEYS 256
 
 #endif

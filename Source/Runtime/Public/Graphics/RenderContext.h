@@ -3,7 +3,10 @@
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
-#include <d3d11.h>
+#if DIRECTX
+//#include "d3d11.h"
+//#include "d3dx11.h"
+#endif
 
 class FRenderContext
 {
@@ -13,4 +16,6 @@ public:
 	/* Destructor. */
 	~FRenderContext();
 
+	/* Processes a single frame. */
+	virtual bool Frame();
 };

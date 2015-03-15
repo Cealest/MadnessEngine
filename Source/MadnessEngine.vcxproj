@@ -164,6 +164,7 @@
     <ClInclude Include="Runtime\Public\Core\Window.h" />
     <ClInclude Include="Runtime\Public\Definitions.h" />
     <ClInclude Include="Runtime\Public\Graphics\RenderContext.h" />
+    <ClInclude Include="Runtime\Public\Input\InputHandle.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
     <ClInclude Include="Runtime\Public\Templates\RingBuffer.h" />
   </ItemGroup>
@@ -173,6 +174,7 @@
     <ClCompile Include="Runtime\Private\Core\Window.cpp" />
     <ClCompile Include="Runtime\Private\Entry.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp" />
+    <ClCompile Include="Runtime\Private\Input\InputHandle.cpp" />
     <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,8 +1,8 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
 
-/* The global program instance. */
-static FProgramInstance GProgramInstance = FProgramInstance();
+const int DefaultWidth = 1024;
+const int DefaultHeight = 768;
 
 #if WINDOWS
 /*
@@ -13,9 +13,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-#if WITH_EDITOR
 	// Initialize the program.
-	if (GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
+	GProgramInstance.Init();
+
+#if WITH_EDITOR
+	// Create the primary window.
+	if (GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight))
 	{
 		// Begin the main execution loop.
 		while (GProgramInstance.ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
@@ -25,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	}
 #else
 	// Initialize the game.
-	if (GProgramInstance.AddGameInstance(GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow)))
+	if (GProgramInstance.AddGameInstance(GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight)))
 	{
 		// Begin the main execution loop.
 		while (GProgramInstance.ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
@@ -34,6 +37,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		}
 	}
 #endif
+	// Cleanup the program on the way out.
+	GProgramInstance.Cleanup();
+
 	return GProgramInstance.ShutdownReason;
 }
 #endif

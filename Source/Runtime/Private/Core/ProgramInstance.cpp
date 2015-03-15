@@ -1,18 +1,35 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
 #include "Runtime/Public/Core/GameInstance.h"
+#include "Runtime/Public/Input/InputHandle.h"
+
+/* The global InputHandle for the program. */
+static FInputHandle InputHandle = FInputHandle();
 
 FProgramInstance::FProgramInstance()
 {
 	ShutdownReason = 0;
 	GameInstances.Empty();
 	Windows.Empty();
+	ActiveWindow = nullptr;
+	bShutdown = false;
 }
 
 FProgramInstance::~FProgramInstance()
 {
 	GameInstances.Empty();
 	Windows.Empty();
+	if (ActiveWindow)
+	{
+		delete ActiveWindow;
+	}
+}
+
+bool FProgramInstance::Init()
+{
+	/* Setup our input handle. */
+	InputHandle.Init();
+	return true;
 }
 
 FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
@@ -31,6 +48,7 @@ FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
 			if (!Windows.Contains(*InWindow))
 			{
 				Windows.Add(*InWindow);
+				ActiveWindow = InWindow;
 			}
 			return NewGameInstance;
 		}
@@ -44,29 +62,107 @@ FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
 	return nullptr;
 }
 
+void FProgramInstance::ExecuteShutdown(int Reason)
+{
+	bShutdown = true;
+	ShutdownReason = Reason;
+}
+
+void FProgramInstance::Cleanup()
+{
+
+}
+
+FInputHandle* FProgramInstance::GetInputHandle()
+{
+	return &InputHandle;
+}
+
 #if WINDOWS
+LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPARAM lParam)
+{
+	TCHAR Greeting[] = _T("Hello, World!");
+
+	switch (InMessage)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		break;
+	default:
+		// Call this window's message handler.
+		return GProgramInstance.HandleMessage(InWindowHandle, InMessage, wParam, lParam);
+	}
+
+	return 0;
+}
+
+LRESULT CALLBACK FProgramInstance::HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam)
+{
+	switch (InMessage)
+	{
+	case WM_KEYDOWN:
+		InputHandle.KeyDown((unsigned int)wParam);
+		return 0;
+	case WM_KEYUP:
+		InputHandle.KeyUp((unsigned int)wParam);
+		return 0;
+	default:
+		return DefWindowProc(InWindowHandle, InMessage, wParam, lParam);
+	}
+}
+
 int FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	for (unsigned int i = 0; i < Windows.Num(); ++i)
+	MSG Message;
+	bool Done, Result;
+
+	// Empty out the message structure
+	ZeroMemory(&Message, sizeof(MSG));
+
+	Done = false;
+	Result = false;
+	while (!Done)
 	{
-		int returnVal = ShutdownReason;
-		if (Windows.Get(i))
+		if (!ActiveWindow)
 		{
-			ShutdownReason = Windows.Get(i)->WindowExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+			// No active window
+		}
+		if (PeekMessage(&Message, ActiveWindow->WindowHandle, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&Message);
+			DispatchMessage(&Message);
+		}
+
+		if (Message.message == WM_QUIT)
+		{
+			Done = true;
+		}
+		else
+		{
+			// Process the next frame
+			Result = ActiveWindow->Frame(&InputHandle);
+			if (!Result)
+			{
+				Done = true;
+			}
 		}
 	}
 
 	return ShutdownReason;
 }
 
-FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height)
 {
 	FWindow* NewWindow = new FWindow();
 	if (NewWindow)
 	{
-		if (NewWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
+		if (NewWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow, Width, Height, WndProc))
 		{
 			Windows.Add(*NewWindow);
+			ActiveWindow = NewWindow;
 			return NewWindow;
 		}
 		else

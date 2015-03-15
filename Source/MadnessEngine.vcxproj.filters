@@ -32,6 +32,12 @@
     <Filter Include="Runtime\Public\Graphics">
       <UniqueIdentifier>{6eaf4c47-9007-4234-9e79-55c868813e4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Private\Input">
+      <UniqueIdentifier>{d5d3022d-6be8-4ce8-83b8-4da698e54da5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Input">
+      <UniqueIdentifier>{607f33a5-306a-4c37-9ba7-fe2115bb1660}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -55,6 +61,9 @@
     <ClInclude Include="Runtime\Public\Templates\RingBuffer.h">
       <Filter>Runtime\Public\Templates</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Input\InputHandle.h">
+      <Filter>Runtime\Public\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -74,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp">
       <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Input\InputHandle.cpp">
+      <Filter>Runtime\Private\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

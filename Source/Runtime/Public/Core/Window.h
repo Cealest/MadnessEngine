@@ -18,6 +18,13 @@ public:
 	/* Destructor. */
 	~FWindow();
 
+	/* Handles a single frame of execution. */
+	bool Frame(class FInputHandle* InputHandle);
+
+protected:
+	/* The context by which graphics are rendered for this window. */
+	class FRenderContext* RenderContext;
+
 #if WINDOWS
 public:
 	/* The window class this program is using. */
@@ -32,9 +39,9 @@ public:
 	HWND WindowHandle;
 
 	/* First time setup for this window.  Returns true if successful. */
-	bool InitWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+	bool InitWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height, const WNDPROC& WndProc);
 
-	/* The main execution loop for this window. */
-	int WindowExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+	/* Handles messages sent from Windows. */
+	LRESULT CALLBACK MessageHandler(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPARAM lParam);
 #endif
 };
