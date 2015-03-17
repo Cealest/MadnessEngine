@@ -142,7 +142,7 @@ int FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE
 {
 	MSG Message;
 	bool Done, Result;
-	int GameIt = 0;
+	unsigned int GameIt = 0;
 
 	// Empty out the message structure
 	ZeroMemory(&Message, sizeof(MSG));
