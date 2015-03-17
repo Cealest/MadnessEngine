@@ -1,8 +1,27 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
 
-const int DefaultWidth = 1024;
-const int DefaultHeight = 768;
+int MadnessMain()
+{
+	int StopExecutionReason = EShutdownReason::None;
+
+	// Initialize the program.
+	if (!GProgramInstance.Init())
+	{
+		StopExecutionReason = EShutdownReason::FailedToInit;
+	}
+	else
+	{
+		// Begin the program loop.
+		GProgramInstance.Loop();
+		StopExecutionReason = GProgramInstance.ShutdownReason;
+
+		// Cleanup the program on the way out.
+		GProgramInstance.Cleanup();
+	}
+
+	return StopExecutionReason;
+}
 
 #if WINDOWS
 /*
@@ -13,33 +32,17 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	// Initialize the program.
-	GProgramInstance.Init();
+	// Copy out these variables so we can reference them easily.
+	GProgramInstance.hInstance = hInstance;
+	GProgramInstance.hPrevInstance = hPrevInstance;
+	GProgramInstance.lpCmdLine = lpCmdLine;
+	GProgramInstance.nCmdShow = nCmdShow;
 
-#if WITH_EDITOR
-	// Create the primary window.
-	if (GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight))
-	{
-		// Begin the main execution loop.
-		while (GProgramInstance.ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
-		{
-			// Wait for execution to stop.
-		}
-	}
+	return MadnessMain();
+}
 #else
-	// Initialize the game.
-	if (GProgramInstance.AddGameInstance(GProgramInstance.AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight)))
-	{
-		// Begin the main execution loop.
-		while (GProgramInstance.ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow))
-		{
-			// Wait for execution to stop.
-		}
-	}
-#endif
-	// Cleanup the program on the way out.
-	GProgramInstance.Cleanup();
-
-	return GProgramInstance.ShutdownReason;
+int main(int argc, char** argv)
+{
+	return MadnessMain();
 }
 #endif

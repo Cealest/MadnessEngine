@@ -29,7 +29,31 @@ bool FProgramInstance::Init()
 {
 	/* Setup our input handle. */
 	InputHandle.Init();
+
+#if WITH_EDITOR
+#if WINDOWS
+	if (!AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight))
+	{
+		/* Failed to add window. */
+		return false;
+	}
+#endif
+#else
+	if (!AddGameInstance())
+	{
+		/* Failed to create game. */
+		return false;
+	}
+#endif
+
 	return true;
+}
+
+void FProgramInstance::Loop()
+{
+#if WINDOWS
+	ProgramExecutionLoopWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+#endif
 }
 
 FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
@@ -118,14 +142,17 @@ int FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE
 {
 	MSG Message;
 	bool Done, Result;
+	int GameIt = 0;
 
 	// Empty out the message structure
 	ZeroMemory(&Message, sizeof(MSG));
 
 	Done = false;
 	Result = false;
+
 	while (!Done)
 	{
+		// Process Input
 		if (!ActiveWindow)
 		{
 			// No active window
@@ -142,6 +169,12 @@ int FProgramInstance::ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE
 		}
 		else
 		{
+			// Update game world
+			for (GameIt = 0; GameIt < GameInstances.Num(); ++GameIt)
+			{
+				//@TODO GameInstances[GameIt].Update();
+			}
+
 			// Process the next frame
 			Result = ActiveWindow->Frame(&InputHandle);
 			if (!Result)

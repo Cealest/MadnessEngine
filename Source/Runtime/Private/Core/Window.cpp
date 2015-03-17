@@ -25,10 +25,12 @@ bool FWindow::Frame(FInputHandle* InputHandle)
 {
 	if (InputHandle)
 	{
+#if WINDOWS
 		if (InputHandle->IsKeyDown(VK_ESCAPE))
 		{
 			return false;
 		}
+#endif
 	}
 
 	if (RenderContext)

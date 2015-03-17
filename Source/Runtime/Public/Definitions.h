@@ -4,9 +4,9 @@
 #define GLOBAL_DEFINITIONS
 
 /* Engine information. */
-#define TITLE "Madness Engine v0.01"
+#define TITLE "Madness Engine v0.02"
 #define SHORT_TITLE "MAD"
-#define VERSION 0.01f
+#define VERSION 0.02f
 #define WITH_EDITOR 1
 /* Target platform. */
 #define WINDOWS 1
@@ -26,5 +26,15 @@
 /* Input settings. */
 #define KEYBOARD 1
 #define KEYS 256
+
+/* Enum that describes shutdown reasons. */
+namespace EShutdownReason
+{
+	enum Type
+	{
+		None,
+		FailedToInit,
+	};
+}
 
 #endif

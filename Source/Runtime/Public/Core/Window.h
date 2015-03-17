@@ -30,12 +30,12 @@ public:
 	/* The window class this program is using. */
 	WNDCLASSEX WindowsClassEX;
 
-	/* The name of the program. */
+	/* The name of the window. */
 	TCHAR* WindowClass;
-	/* Title of the program. */
+	/* Title of the window. */
 	TCHAR* Title;
 
-	/* The window handle for this program. */
+	/* The window handle for this window. */
 	HWND WindowHandle;
 
 	/* First time setup for this window.  Returns true if successful. */

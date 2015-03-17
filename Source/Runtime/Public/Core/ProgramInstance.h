@@ -13,6 +13,10 @@ There should only be one ProgramInstance per program.
 class FProgramInstance
 {
 public:
+	/* Variable constants. */
+	const int DefaultWidth = 1024;
+	const int DefaultHeight = 768;
+
 	/* Why we're shutting down the program. 0 means everything went smoothly. */
 	int ShutdownReason;
 
@@ -23,6 +27,9 @@ public:
 
 	/* Initializes the program. */
 	bool Init();
+
+	/* Runs the main loop for the program. */
+	void Loop();
 
 	/* Function which creates a game in the specified window. */
 	class FGameInstance* AddGameInstance(FWindow* InWindow);
@@ -45,6 +52,12 @@ public:
 
 	/* Function which creates a window not tied to a game instance. */
 	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height);
+
+
+	HINSTANCE hInstance;
+	HINSTANCE hPrevInstance;
+	LPSTR lpCmdLine;
+	int nCmdShow;
 #endif
 
 private:
@@ -61,7 +74,7 @@ private:
 	FWindow* ActiveWindow;
 };
 
-#ifdef WINDOWS
+#if WINDOWS
 /* Windows callback procedure. */
 static LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPARAM lParam);
 #endif
