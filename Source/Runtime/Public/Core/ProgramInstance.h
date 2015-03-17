@@ -2,7 +2,9 @@
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
+#if WINDOWS
 #include "Runtime/Public/Core/Window.h"
+#endif // WINDOWS
 #include "Runtime/Public/Templates/Array.h"
 
 /*

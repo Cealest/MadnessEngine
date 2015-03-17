@@ -64,6 +64,9 @@
     <ClInclude Include="Runtime\Public\Input\InputHandle.h">
       <Filter>Runtime\Public\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\D3DHandle.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Runtime\Private\Input\InputHandle.cpp">
       <Filter>Runtime\Private\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\D3DHandle.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,8 +4,7 @@
 
 #include "Runtime/Public/Definitions.h"
 #if DIRECTX
-//#include "d3d11.h"
-//#include "d3dx11.h"
+#include "Runtime/Public/Graphics/D3DHandle.h"
 #endif
 
 class FRenderContext
@@ -18,4 +17,10 @@ public:
 
 	/* Processes a single frame. */
 	virtual bool Frame();
+
+private:
+#if DIRECTX
+	/* This handles interaction with DirectX. */
+	FD3DHandle* DirectXHandle;
+#endif
 };

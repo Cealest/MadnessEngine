@@ -1,6 +1,7 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
 
+/* The true entry into this madness! */
 int MadnessMain()
 {
 	int StopExecutionReason = EShutdownReason::None;
