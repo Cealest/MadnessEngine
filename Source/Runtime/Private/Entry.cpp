@@ -1,6 +1,8 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Core/ProgramInstance.h"
 
+FProgramInstance& GProgramInstance = FProgramInstance();
+
 /* The true entry into this madness! */
 int MadnessMain()
 {

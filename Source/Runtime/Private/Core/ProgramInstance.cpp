@@ -22,6 +22,7 @@ FProgramInstance::~FProgramInstance()
 	if (ActiveWindow)
 	{
 		delete ActiveWindow;
+		ActiveWindow = nullptr;
 	}
 }
 

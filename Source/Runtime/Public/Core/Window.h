@@ -10,6 +10,12 @@
 #include <tchar.h>
 #endif
 
+/*
+A single window in the program.
+This could be an actual window on an
+operating system or it could just be
+a renderable screen space.
+*/
 class FWindow
 {
 public:
@@ -17,6 +23,9 @@ public:
 	FWindow();
 	/* Destructor. */
 	~FWindow();
+
+	/* Initializes the window's render context. */
+	bool Init();
 
 	/* Handles a single frame of execution. */
 	bool Frame(class FInputHandle* InputHandle);

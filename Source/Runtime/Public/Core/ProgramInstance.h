@@ -2,9 +2,7 @@
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
-#if WINDOWS
 #include "Runtime/Public/Core/Window.h"
-#endif // WINDOWS
 #include "Runtime/Public/Templates/Array.h"
 
 /*
@@ -82,4 +80,4 @@ static LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wPar
 #endif
 
 /* Global program instance. */
-static FProgramInstance& GProgramInstance = FProgramInstance();
+extern FProgramInstance& GProgramInstance;

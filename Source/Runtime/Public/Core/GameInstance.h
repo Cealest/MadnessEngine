@@ -5,7 +5,8 @@
 #include "Runtime/Public/Core/Window.h"
 
 /*
-GameInstance is a single game window in the program.
+GameInstance is a single game in the program.
+There is normally only a single game in the program.
 */
 class FGameInstance
 {

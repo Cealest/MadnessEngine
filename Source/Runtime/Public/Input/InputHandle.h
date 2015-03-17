@@ -1,9 +1,11 @@
 /* Copyright 2015 Myles Salholm */
-
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
 
+/*
+Handles the user's input.
+*/
 class FInputHandle
 {
 public:

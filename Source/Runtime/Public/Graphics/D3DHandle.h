@@ -1,6 +1,6 @@
 /* Copyright 2015 Myles Salholm */
-
 #pragma once
+
 #include "Runtime/Public/Definitions.h"
 
 #if DIRECTX
@@ -15,6 +15,9 @@
 #include <d3d11.h>
 #include <D3DX10math.h>
 
+/*
+Handles interactions with DirectX.
+*/
 class FD3DHandle
 {
 public:
@@ -22,8 +25,5 @@ public:
 	FD3DHandle();
 	/* Destructor. */
 	~FD3DHandle();
-
-	/* Processes a single frame. */
-	virtual bool Frame();
 };
 #endif

@@ -12,9 +12,4 @@ FD3DHandle::~FD3DHandle()
 {
 
 }
-
-bool FD3DHandle::Frame()
-{
-	return true;
-}
 #endif

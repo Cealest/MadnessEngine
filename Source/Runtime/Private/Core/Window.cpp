@@ -17,8 +17,25 @@ FWindow::~FWindow()
 {
 	if (RenderContext)
 	{
+		RenderContext->Shutdown();
 		delete RenderContext;
 	}
+}
+
+bool FWindow::Init()
+{
+	RenderContext = new FRenderContext();
+	if (!RenderContext)
+	{
+		// Failed to create render context.
+		return false;
+	}
+	if (!RenderContext->Init(this))
+	{
+		// Failed to initialize render context.
+		return false;
+	}
+	return true;
 }
 
 bool FWindow::Frame(FInputHandle* InputHandle)
@@ -110,16 +127,9 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 	ShowWindow(WindowHandle, nCmdShow);
 	SetForegroundWindow(WindowHandle);
 	SetFocus(WindowHandle);
-	ShowCursor(SHOWMOUSE);
+	ShowCursor(true);
 
-	/* Setup our render context. */
-	RenderContext = new FRenderContext();
-	if (!RenderContext)
-	{
-		MessageBox(NULL, _T("Failed to create RenderContext in FProgramInstance::InitWindows!"), Title, NULL);
-		return false;
-	}
-
-	return true;
+	// Return the generic initialization's result.
+	return Init();
 }
 #endif

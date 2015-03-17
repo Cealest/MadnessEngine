@@ -1,8 +1,9 @@
 /* Copyright 2015 Myles Salholm */
 #pragma once
-#include <cstdlib>
 
-/* A buffer with a limited size and whose head leads to its tail. */
+/*
+A buffer with a limited size and whose head leads to its tail.
+*/
 template<typename Type>
 class TRingBuffer
 {
