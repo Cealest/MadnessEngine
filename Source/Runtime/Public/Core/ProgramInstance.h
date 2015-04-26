@@ -16,9 +16,11 @@ public:
 	/* Variable constants. */
 	const int DefaultWidth = 1024;
 	const int DefaultHeight = 768;
+	
+	const bool bOnlyUpdateActiveWindow = true;
 
 	/* Why we're shutting down the program. 0 means everything went smoothly. */
-	int ShutdownReason;
+	EShutdownReason::Type ShutdownReason;
 
 	/* Constructor. */
 	FProgramInstance();
@@ -35,20 +37,26 @@ public:
 	class FGameInstance* AddGameInstance(FWindow* InWindow);
 
 	/* Assigns ShutdownReason */
-	void ExecuteShutdown(int Reason);
+	void ExecuteShutdown(EShutdownReason::Type Reason);
 
 	/* Cleans up the program after the program has started exiting. */
 	void Cleanup();
 
+	/* Processes all input for the program.
+	 * Generally, the ActiveWindow will govern what to do with it.
+	 * However, input may change the active window.
+	 */
+	void ProcessInput();
+
 	/* Retrieves the handle for the program's input. */
 	class FInputHandle* GetInputHandle();
+
+	/* Returns the current clock cycles in milliseconds. */
+	double GetTime();
 
 #if WINDOWS
 	/* Distributes the Windows message to the active window. */
 	static LRESULT CALLBACK HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam);
-
-	/* The main program execution loop when running on Windows. */
-	int ProgramExecutionLoopWindows(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
 	/* Function which creates a window not tied to a game instance. */
 	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height);
@@ -58,6 +66,8 @@ public:
 	HINSTANCE hPrevInstance;
 	LPSTR lpCmdLine;
 	int nCmdShow;
+
+	MSG Message;
 #endif
 
 private:

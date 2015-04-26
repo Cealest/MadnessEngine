@@ -23,7 +23,21 @@ class FD3DHandle
 public:
 	/* Constructor. */
 	FD3DHandle();
+	/* Copy Constructor. */
+	FD3DHandle(const FD3DHandle& Other);
 	/* Destructor. */
 	~FD3DHandle();
+
+	/* Sets up DirectX for rendering to the window. */
+	bool Initialize(int ScreenWidth, int ScreenHeight, bool VSync, HWND WindowHandle, float ScreenDepth, float ScreenNear);
+
+	/* Shuts down DirectX. */
+	void Shutdown();
+
+	/* Clears the back buffer to the passed in color. */
+	void BeginScene(float Red, float Green, float Blue, float Alpha);
+
+	/* Presents the back buffer to the screen. */
+	void EndScreen();
 };
 #endif

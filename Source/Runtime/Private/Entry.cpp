@@ -6,7 +6,7 @@ FProgramInstance& GProgramInstance = FProgramInstance();
 /* The true entry into this madness! */
 int MadnessMain()
 {
-	int StopExecutionReason = EShutdownReason::None;
+	int StopExecutionReason = EShutdownReason::Unknown;
 
 	// Initialize the program.
 	if (!GProgramInstance.Init())

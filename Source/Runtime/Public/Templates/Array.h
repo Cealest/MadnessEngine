@@ -17,6 +17,9 @@ public:
 	TArray(const TArray &Array);
 	/* Assignment operator. */
 	TArray& operator = (const TArray &Array);
+	/* Array style retrieval. */
+	const Type& operator [] (const unsigned int &Index) const;
+	Type& operator [] (const unsigned int &Index);
 	
 	/* Returns the number of elements in the array. */
 	unsigned int Num() const;
@@ -123,6 +126,30 @@ TArray<Type>& TArray<Type>::operator = (const TArray &Array)
 
 	memcpy(Elements, Array.Elements, sizeof(Type*) * Array.ArraySize);
 	return *this;
+}
+
+template<typename Type>
+const Type& TArray<Type>::operator [] (const unsigned int &Index) const
+{
+	if (ArraySize < Index)
+	{
+		// Bad index
+		throw 0;
+	}
+
+	return Elements[Index];
+}
+
+template<typename Type>
+Type& TArray<Type>::operator [] (const unsigned int &Index)
+{
+	if (ArraySize < Index)
+	{
+		// Bad index
+		throw 0;
+	}
+
+	return Elements[Index];
 }
 
 template<typename Type>

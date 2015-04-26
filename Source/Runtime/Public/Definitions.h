@@ -7,13 +7,16 @@
 #define TITLE "Madness Engine v0.02"
 #define SHORT_TITLE "MAD"
 #define VERSION 0.02f
-#define WITH_EDITOR 1
+#define WITH_EDITOR 0
 
 /* Target platform. */
 #define WINDOWS 1
 #if WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #endif
+
+/* Global engine constants. */
+#define MS_PER_UPDATE (1000.0f / 120.0f)
 
 /* Which graphics API we're using. */
 #define DIRECTX 1
@@ -36,8 +39,10 @@ namespace EShutdownReason
 {
 	enum Type
 	{
-		None,
+		Quit,
 		FailedToInit,
+		FailedToRender,
+		Unknown,
 	};
 }
 

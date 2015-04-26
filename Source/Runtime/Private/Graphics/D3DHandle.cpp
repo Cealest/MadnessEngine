@@ -8,6 +8,11 @@ FD3DHandle::FD3DHandle()
 	
 }
 
+FD3DHandle::FD3DHandle(const FD3DHandle& Other)
+{
+
+}
+
 FD3DHandle::~FD3DHandle()
 {
 

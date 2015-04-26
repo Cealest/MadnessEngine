@@ -38,18 +38,8 @@ bool FWindow::Init()
 	return true;
 }
 
-bool FWindow::Frame(FInputHandle* InputHandle)
+bool FWindow::Frame()
 {
-	if (InputHandle)
-	{
-#if WINDOWS
-		if (InputHandle->IsKeyDown(VK_ESCAPE))
-		{
-			return false;
-		}
-#endif
-	}
-
 	if (RenderContext)
 	{
 		if (!RenderContext->Frame())

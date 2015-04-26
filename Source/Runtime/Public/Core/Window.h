@@ -28,7 +28,7 @@ public:
 	bool Init();
 
 	/* Handles a single frame of execution. */
-	bool Frame(class FInputHandle* InputHandle);
+	bool Frame();
 
 protected:
 	/* The context by which graphics are rendered for this window. */
