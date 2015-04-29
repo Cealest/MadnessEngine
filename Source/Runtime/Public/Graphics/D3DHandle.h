@@ -38,6 +38,66 @@ public:
 	void BeginScene(float Red, float Green, float Blue, float Alpha);
 
 	/* Presents the back buffer to the screen. */
-	void EndScreen();
+	void EndScene();
+
+	/* Returns reference to our DirectX 11 Device. */
+	ID3D11Device* GetDevice();
+
+	/* Returns reference to our DirectX 11 Device Context. */
+	ID3D11DeviceContext* GetDeviceContext();
+
+	/* Sets OutD3DMatrix to the projection matrix. */
+	void GetProjectionMatrix(D3DXMATRIX& OutD3DMatrix);
+	/* Sets OutD3DMatrix to the world matrix. */
+	void GetWorldMatrix(D3DXMATRIX& OutD3DMatrix);
+	/* Sets OutD3DMatrix to the orthographic matrix. */
+	void GetOrthoMatrix(D3DXMATRIX& OutD3DMatrix);
+
+	/* Sets OutString to the graphics card info and OutMemory to the available memory. */
+	void GetVideoCardInfo(char* OutString, int& OutMemory);
+
+private:
+	/* Is actively using vertical sync. */
+	bool VSyncEnabled;
+
+	/* How much memory we get. */
+	int VideoCardMemory;
+
+	/* Some extra card info. */
+	char VideoCardDescription[128];
+
+	/* DirectX SwapChain. */
+	IDXGISwapChain* SwapChain;
+
+	/* Graphics Device. */
+	ID3D11Device* Device;
+
+	/* Graphics Device Context. */
+	ID3D11DeviceContext* DeviceContext;
+
+	/* Render target view. */
+	ID3D11RenderTargetView* RenderTargetView;
+
+	/* Buffer for depth shading. */
+	ID3D11Texture2D* DepthStencilBuffer;
+
+	/* Current state for depth shading. */
+	ID3D11DepthStencilState* DepthStencilState;
+
+	/* View for depth shading. */
+	ID3D11DepthStencilView* DepthStencilView;
+
+	/* The rasterizer. */
+	ID3D11RasterizerState* RasterState;
+
+	/* Projection Matrix. */
+	D3DXMATRIX ProjectionMatrix;
+
+	/* World Matrix. */
+	D3DXMATRIX WorldMatrix;
+
+	/* Orthographic Matrix. */
+	D3DXMATRIX OrthoMatrix;
+
 };
 #endif

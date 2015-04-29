@@ -1,6 +1,7 @@
 /* Copyright 2015 Myles Salholm */
 #include "Runtime/Public/Graphics/RenderContext.h"
 #include "Runtime/Public/Core/Window.h"
+#include "Runtime/Public/Core/ProgramInstance.h"
 
 FRenderContext::FRenderContext()
 {
@@ -16,7 +17,7 @@ FRenderContext::~FRenderContext()
 #if DIRECTX
 	if (DirectXHandle)
 	{
-		//DirectXHandle->Shutdown();
+		DirectXHandle->Shutdown();
 		delete DirectXHandle;
 		DirectXHandle = nullptr;
 	}
@@ -41,7 +42,11 @@ bool FRenderContext::Init(FWindow* Owner)
 		// No DirectX interface and we're using DirectX.
 		return false;
 	}
-	//@TODO DirectXHandle->Init
+	if (!DirectXHandle->Initialize(GProgramInstance.DefaultWidth, GProgramInstance.DefaultHeight, GVerticalSync, Owner->WindowHandle, GFarClip, GNearClip))
+	{
+		// Failed to initialize DirectX
+		return false;
+	}
 #endif
 
 	return true;
@@ -52,7 +57,7 @@ void FRenderContext::Shutdown()
 #if DIRECTX
 	if (DirectXHandle)
 	{
-		//DirectXHandle->Shutdown();
+		DirectXHandle->Shutdown();
 		delete DirectXHandle;
 		DirectXHandle = nullptr;
 	}
@@ -61,12 +66,28 @@ void FRenderContext::Shutdown()
 
 bool FRenderContext::Frame()
 {
+	//@TODO Re-evaluate whether this function is really necessary.
+
+	bool result = Render();
+	if (!result)
+	{
+		// Failed to render.
+		return false;
+	}
+
+	return true;
+}
+
+bool FRenderContext::Render()
+{
 #if DIRECTX
 	if (DirectXHandle)
 	{
-		//DirectXHandle->BeginScene
+		// Clear the buffers.
+		DirectXHandle->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
 
-		//DirectXHandle->EndScene
+		// Swap the buffers.
+		DirectXHandle->EndScene();
 
 		return true;
 	}

@@ -60,7 +60,7 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 	int Height,
 	const WNDPROC& WndProc)
 {
-	int WindowX, WindowY;
+	int windowX, windowY;
 
 	// Setup the window class.
 	WindowsClassEX.cbSize = sizeof(WNDCLASSEX);
@@ -82,18 +82,18 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 	}
 
 	// Setup full screen settings
-	if (FULLSCREEN)
+	if (GFullScreen)
 	{
 		Width = GetSystemMetrics(SM_CXSCREEN);
 		Height = GetSystemMetrics(SM_CYSCREEN);
 
-		WindowX = 0;
-		WindowY = 0;
+		windowX = 0;
+		windowY = 0;
 	}
 	else
 	{
-		WindowX = (GetSystemMetrics(SM_CXSCREEN) - Width) / 2;
-		WindowY = (GetSystemMetrics(SM_CYSCREEN) - Height) / 2;
+		windowX = (GetSystemMetrics(SM_CXSCREEN) - Width) / 2;
+		windowY = (GetSystemMetrics(SM_CYSCREEN) - Height) / 2;
 	}
 
 	// Now setup the handle for the window.
@@ -101,7 +101,7 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 		WindowClass,
 		Title,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
-		WindowX, WindowY,
+		windowX, windowY,
 		Width, Height,
 		NULL,
 		NULL,

@@ -7,7 +7,7 @@
 #define TITLE "Madness Engine v0.02"
 #define SHORT_TITLE "MAD"
 #define VERSION 0.02f
-#define WITH_EDITOR 0
+#define WITH_EDITOR 1
 
 /* Target platform. */
 #define WINDOWS 1
@@ -18,12 +18,9 @@
 /* Global engine constants. */
 #define MS_PER_UPDATE (1000.0f / 120.0f)
 
-/* Which graphics API we're using. */
+/* Which graphics APIs we're compiling. */
 #define DIRECTX 1
 #define OPENGL 0
-
-/* Graphics settings. */
-#define FULLSCREEN 0
 
 /* What networking structure we're using. */
 #define SERVER 0

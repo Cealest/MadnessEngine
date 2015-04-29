@@ -6,24 +6,21 @@ FProgramInstance& GProgramInstance = FProgramInstance();
 /* The true entry into this madness! */
 int MadnessMain()
 {
-	int StopExecutionReason = EShutdownReason::Unknown;
-
 	// Initialize the program.
 	if (!GProgramInstance.Init())
 	{
-		StopExecutionReason = EShutdownReason::FailedToInit;
+		GProgramInstance.ShutdownReason = EShutdownReason::FailedToInit;
 	}
 	else
 	{
 		// Begin the program loop.
 		GProgramInstance.Loop();
-		StopExecutionReason = GProgramInstance.ShutdownReason;
 
 		// Cleanup the program on the way out.
 		GProgramInstance.Cleanup();
 	}
 
-	return StopExecutionReason;
+	return GProgramInstance.ShutdownReason;
 }
 
 #if WINDOWS

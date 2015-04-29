@@ -57,30 +57,30 @@ bool FProgramInstance::Init()
 
 void FProgramInstance::Loop()
 {
-	bool RenderResult = false;
-	unsigned int GameIt = 0;
-	unsigned int WindowIt = 0;
+	bool renderResult = false;
+	unsigned int gameIt = 0;
+	unsigned int windowIt = 0;
 
 	// Standard fixed timestep with variable framerate.
-	double LastFrameTime = GetCurrentTime();
-	double Lag = 0.0f;
+	double lastFrameTime = GetTime();
+	double lag = 0.0f;
 	while (!bShutdown)
 	{
-		double CurrentFrameTime = GetCurrentTime();
-		double ElapsedFrameTime = CurrentFrameTime - LastFrameTime;
-		LastFrameTime = CurrentFrameTime;
-		Lag += ElapsedFrameTime;
+		double currentFrameTime = GetTime();
+		double elapsedFrameTime = currentFrameTime - lastFrameTime;
+		lastFrameTime = currentFrameTime;
+		lag += elapsedFrameTime;
 
 		ProcessInput();
 
-		while (Lag >= MS_PER_UPDATE)
+		while (lag >= MS_PER_UPDATE)
 		{
 			// Update game world
-			for (GameIt = 0; GameIt < GameInstances.Num(); ++GameIt)
+			for (gameIt = 0; gameIt < GameInstances.Num(); ++gameIt)
 			{
 				//@TODO GameInstances[GameIt].Update();
 			}
-			Lag -= MS_PER_UPDATE;
+			lag -= MS_PER_UPDATE;
 		}
 
 		// Process the next frame
@@ -97,9 +97,9 @@ void FProgramInstance::Loop()
 		}
 		else
 		{
-			for (WindowIt = 0; WindowIt < Windows.Num(); ++WindowIt)
+			for (windowIt = 0; windowIt < Windows.Num(); ++windowIt)
 			{
-				if (!Windows[WindowIt].Frame())
+				if (!Windows[windowIt].Frame())
 				{
 					ExecuteShutdown(EShutdownReason::FailedToRender);
 				}
@@ -115,23 +115,23 @@ FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
 		// No window, let's make one then!
 		return nullptr;
 	}
-	FGameInstance* NewGameInstance = new FGameInstance();
-	if (NewGameInstance)
+	FGameInstance* newGameInstance = new FGameInstance();
+	if (newGameInstance)
 	{
-		if (NewGameInstance->Init(InWindow))
+		if (newGameInstance->Init(InWindow))
 		{
-			GameInstances.Add(*NewGameInstance);
+			GameInstances.Add(*newGameInstance);
 			if (!Windows.Contains(*InWindow))
 			{
 				Windows.Add(*InWindow);
 				ActiveWindow = InWindow;
 			}
-			return NewGameInstance;
+			return newGameInstance;
 		}
 		else
 		{
 			// Failed to initialize game instance
-			delete NewGameInstance;
+			delete newGameInstance;
 		}
 	}
 	// Somehow failed to make the game instance
@@ -199,8 +199,6 @@ double FProgramInstance::GetTime()
 #if WINDOWS
 LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPARAM lParam)
 {
-	TCHAR Greeting[] = _T("Hello, World!");
-
 	switch (InMessage)
 	{
 	case WM_DESTROY:
@@ -234,19 +232,19 @@ LRESULT CALLBACK FProgramInstance::HandleMessage(HWND& InWindowHandle, UINT& InM
 
 FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height)
 {
-	FWindow* NewWindow = new FWindow();
-	if (NewWindow)
+	FWindow* newWindow = new FWindow();
+	if (newWindow)
 	{
-		if (NewWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow, Width, Height, WndProc))
+		if (newWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow, Width, Height, WndProc))
 		{
-			Windows.Add(*NewWindow);
-			ActiveWindow = NewWindow;
-			return NewWindow;
+			Windows.Add(*newWindow);
+			ActiveWindow = newWindow;
+			return newWindow;
 		}
 		else
 		{
 			// Window initialization failed
-			delete NewWindow;
+			delete newWindow;
 		}
 	}
 	return nullptr;

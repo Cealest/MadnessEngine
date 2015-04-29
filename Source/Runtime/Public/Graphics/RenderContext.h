@@ -7,6 +7,12 @@
 #include "Runtime/Public/Graphics/D3DHandle.h"
 #endif
 
+/* Global variables free for all. */
+const bool GFullScreen = false;
+const bool GVerticalSync = true;
+const float GFarClip = 100000.0f;
+const float GNearClip = 0.001f;
+
 /* 
 The context which determines how the rendering engine behaves.
 */
@@ -27,13 +33,13 @@ public:
 	/* Processes a single frame. */
 	bool Frame();
 
-	/* Processes a single frame. */
-	bool Render();
-
 	/* The window that owns this render context. */
 	class FWindow* WindowOwner;
 
 private:
+	/* Renders a single frame. */
+	bool Render();
+
 #if DIRECTX
 	/* This handles interaction with DirectX. */
 	FD3DHandle* DirectXHandle;
