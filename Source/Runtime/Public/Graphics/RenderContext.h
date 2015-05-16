@@ -7,6 +7,10 @@
 #include "Runtime/Public/Graphics/D3DHandle.h"
 #endif
 
+#include "Camera.h"
+#include "Model.h"
+#include "ColorShader.h"
+
 /* Global variables free for all. */
 const bool GFullScreen = false;
 const bool GVerticalSync = true;
@@ -43,5 +47,14 @@ private:
 #if DIRECTX
 	/* This handles interaction with DirectX. */
 	FD3DHandle* DirectXHandle;
+
+	/* Camera used to render the scene from. */
+	FCamera* Camera;
+
+	/* The model (triangle) we're rendering. */
+	FModel* Model;
+
+	/* The shader used to render the model. */
+	FColorShader* ColorShader;
 #endif
 };

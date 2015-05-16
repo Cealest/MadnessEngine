@@ -1,1 +1,5 @@
 Intermediate/
+Source/*.opensdf
+Source/*.sdf
+Source/*.suo
+Source/*.user

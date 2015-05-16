@@ -163,7 +163,10 @@
     <ClInclude Include="Runtime\Public\Core\ProgramInstance.h" />
     <ClInclude Include="Runtime\Public\Core\Window.h" />
     <ClInclude Include="Runtime\Public\Definitions.h" />
+    <ClInclude Include="Runtime\Public\Graphics\Camera.h" />
+    <ClInclude Include="Runtime\Public\Graphics\ColorShader.h" />
     <ClInclude Include="Runtime\Public\Graphics\D3DHandle.h" />
+    <ClInclude Include="Runtime\Public\Graphics\Model.h" />
     <ClInclude Include="Runtime\Public\Graphics\RenderContext.h" />
     <ClInclude Include="Runtime\Public\Input\InputHandle.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
@@ -174,10 +177,17 @@
     <ClCompile Include="Runtime\Private\Core\ProgramInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\Window.cpp" />
     <ClCompile Include="Runtime\Private\Entry.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\Camera.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\ColorShader.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\D3DHandle.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\Model.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp" />
     <ClCompile Include="Runtime\Private\Input\InputHandle.cpp" />
     <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Content\Shaders\Color.ps" />
+    <None Include="..\Content\Shaders\Color.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

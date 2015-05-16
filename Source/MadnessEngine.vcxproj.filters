@@ -38,6 +38,9 @@
     <Filter Include="Runtime\Public\Input">
       <UniqueIdentifier>{607f33a5-306a-4c37-9ba7-fe2115bb1660}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{0b4ef933-5a0c-498d-8c11-26ecd46ccc48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -67,6 +70,15 @@
     <ClInclude Include="Runtime\Public\Graphics\D3DHandle.h">
       <Filter>Runtime\Public\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\Model.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\ColorShader.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\Camera.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -93,5 +105,22 @@
     <ClCompile Include="Runtime\Private\Graphics\D3DHandle.cpp">
       <Filter>Runtime\Private\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\Model.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\ColorShader.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\Camera.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Content\Shaders\Color.ps">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Content\Shaders\Color.vs">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
