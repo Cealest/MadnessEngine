@@ -2,6 +2,10 @@
 #include "Runtime/Public/Graphics/RenderContext.h"
 #include "Runtime/Public/Core/Window.h"
 #include "Runtime/Public/Core/ProgramInstance.h"
+#include "Runtime/Public/Graphics/Camera.h"
+#include "Runtime/Public/Graphics/Model.h"
+#include "Runtime/Public/Graphics/ColorShader.h"
+#include "Runtime/Public/Graphics/TextureShader.h"
 
 FRenderContext::FRenderContext()
 {
@@ -12,6 +16,8 @@ FRenderContext::FRenderContext()
 	Camera = nullptr;
 	Model = nullptr;
 	ColorShader = nullptr;
+	TextureShader = nullptr;
+	bRenderWithTexture = true;
 #endif
 }
 
@@ -23,6 +29,13 @@ FRenderContext::~FRenderContext()
 		ColorShader->Shutdown();
 		delete ColorShader;
 		ColorShader = nullptr;
+	}
+	
+	if (TextureShader)
+	{
+		TextureShader->Shutdown();
+		delete TextureShader;
+		TextureShader = nullptr;
 	}
 
 	if (Model)
@@ -86,7 +99,7 @@ bool FRenderContext::Init(FWindow* Owner)
 		return false;
 	}
 	// Initialize the model
-	if (!Model->Initialize(DirectXHandle->GetDevice()))
+	if (!Model->Initialize(DirectXHandle->GetDevice(), L"C:/MadnessEngine/MadnessEngine/Content/Textures/Test.dds"))
 	{
 		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
@@ -104,6 +117,19 @@ bool FRenderContext::Init(FWindow* Owner)
 		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the color shader object.", L"Error", MB_OK);
 		return false;
 	}
+
+	// Create the texture shader
+	TextureShader = new FTextureShader();
+	if (!TextureShader)
+	{
+		return false;
+	}
+	// Initialize the shader
+	if (!TextureShader->Initialize(DirectXHandle->GetDevice(), WindowOwner->WindowHandle, Model->GetTexture()))
+	{
+		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
 #endif
 
 	return true;
@@ -117,6 +143,13 @@ void FRenderContext::Shutdown()
 		ColorShader->Shutdown();
 		delete ColorShader;
 		ColorShader = nullptr;
+	}
+
+	if (TextureShader)
+	{
+		TextureShader->Shutdown();
+		delete TextureShader;
+		TextureShader = nullptr;
 	}
 
 	if (Model)
@@ -176,10 +209,22 @@ bool FRenderContext::Render()
 		// Put the model vertex and index buffers on the graphics pipeline to prepare for drawing.
 		Model->Render(DirectXHandle->GetDeviceContext());
 
-		// Render the model using the color shader.
-		if (!ColorShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix))
+
+		if (bRenderWithTexture)
 		{
-			return false;
+			// Render the model using the texture shader.
+			if (!TextureShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			// Render the model using the color shader.
+			if (!ColorShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix))
+			{
+				return false;
+			}
 		}
 
 		// Swap the buffers.

@@ -2,6 +2,8 @@
 #include "Runtime/Public/Core/ProgramInstance.h"
 #include "Runtime/Public/Core/GameInstance.h"
 #include "Runtime/Public/Input/InputHandle.h"
+#include "Runtime/Public/Core/Window.h"
+#include "Runtime/Public/Graphics/RenderContext.h"
 
 /* The global InputHandle for the program. */
 static FInputHandle InputHandle = FInputHandle();
@@ -177,6 +179,14 @@ void FProgramInstance::ProcessInput()
 	if (GetInputHandle()->IsKeyDown(VK_ESCAPE))
 	{
 		ExecuteShutdown(EShutdownReason::Quit);
+	}
+	if (GetInputHandle()->IsKeyDown(VK_SHIFT))
+	{
+		ActiveWindow->RenderContext->bRenderWithTexture = false;
+	}
+	if (GetInputHandle()->IsKeyDown(VK_CONTROL))
+	{
+		ActiveWindow->RenderContext->bRenderWithTexture = true;
 	}
 #endif
 }

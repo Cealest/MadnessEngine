@@ -30,7 +30,7 @@ public:
 	/* Handles a single frame of execution. */
 	bool Frame();
 
-protected:
+public:
 	/* The context by which graphics are rendered for this window. */
 	class FRenderContext* RenderContext;
 

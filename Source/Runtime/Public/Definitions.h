@@ -3,8 +3,6 @@
 #ifndef GLOBAL_DEFINITIONS
 #define GLOBAL_DEFINITIONS
 
-#include <stdio.h>
-
 /* Engine information. */
 #define TITLE "Madness Engine v0.03"
 #define SHORT_TITLE "MAD"

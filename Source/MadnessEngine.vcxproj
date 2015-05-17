@@ -168,6 +168,9 @@
     <ClInclude Include="Runtime\Public\Graphics\D3DHandle.h" />
     <ClInclude Include="Runtime\Public\Graphics\Model.h" />
     <ClInclude Include="Runtime\Public\Graphics\RenderContext.h" />
+    <ClInclude Include="Runtime\Public\Graphics\Shader.h" />
+    <ClInclude Include="Runtime\Public\Graphics\Texture.h" />
+    <ClInclude Include="Runtime\Public\Graphics\TextureShader.h" />
     <ClInclude Include="Runtime\Public\Input\InputHandle.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
     <ClInclude Include="Runtime\Public\Templates\RingBuffer.h" />
@@ -182,12 +185,17 @@
     <ClCompile Include="Runtime\Private\Graphics\D3DHandle.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\Model.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\RenderContext.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\Shader.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\Texture.cpp" />
+    <ClCompile Include="Runtime\Private\Graphics\TextureShader.cpp" />
     <ClCompile Include="Runtime\Private\Input\InputHandle.cpp" />
     <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Content\Shaders\Color.ps" />
-    <None Include="..\Content\Shaders\Color.vs" />
+    <None Include="Shaders\Color.ps" />
+    <None Include="Shaders\Color.vs" />
+    <None Include="Shaders\Texture.ps" />
+    <None Include="Shaders\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

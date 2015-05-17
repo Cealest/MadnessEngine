@@ -17,6 +17,8 @@ public:
 	TArray(const TArray &Array);
 	/* Assignment operator. */
 	TArray& operator = (const TArray &Array);
+	/* Assignment operator. */
+	TArray& operator = (const Type* Array);
 	/* Array style retrieval. */
 	const Type& operator [] (const unsigned int &Index) const;
 	Type& operator [] (const unsigned int &Index);
@@ -29,6 +31,9 @@ public:
 
 	/* Returns an element, if any, in the array for the given index. */
 	Type* Get(unsigned int Index) const;
+
+	/* Returns an element, if any, in the array for the given index. */
+	Type* GetData() const;
 
 	/* Sets the size of the array. */
 	void SetSize(unsigned int Size);
@@ -44,6 +49,9 @@ public:
 
 	/* Removes all elements of the array. */
 	void Empty();
+
+	/* Returns true if the array is empty. */
+	bool IsEmpty();
 
 private:
 	/* The elements filled in this array. */
@@ -129,6 +137,24 @@ TArray<Type>& TArray<Type>::operator = (const TArray &Array)
 }
 
 template<typename Type>
+TArray<Type>& TArray<Type>::operator = (const Type* Array)
+{
+	if (Elements == Array)
+	{
+		return *this;
+	}
+
+	if (Array == nullptr)
+	{
+		Empty();
+	}
+
+	ArraySize = sizeof(Array);
+	memcpy(Elements, Array, sizeof(Type) * ArraySize);
+	return *this;
+}
+
+template<typename Type>
 const Type& TArray<Type>::operator [] (const unsigned int &Index) const
 {
 	if (ArraySize < Index)
@@ -189,6 +215,12 @@ Type* TArray<Type>::Get(unsigned int Index) const
 	}
 
 	return &Elements[Index];
+}
+
+template<typename Type>
+Type* TArray<Type>::GetData() const
+{
+	return Elements;
 }
 
 template<typename Type>
@@ -276,4 +308,15 @@ void TArray<Type>::Empty()
 
 	Elements = (Type*)realloc(Elements, sizeof(Type) * ArrayBufferStep);
 	DataSize = ArrayBufferStep;
+}
+
+template<typename Type>
+bool TArray<Type>::IsEmpty()
+{
+	// Reallocate to the the original array size with no elements.
+	if (Elements)
+	{
+		return false;
+	}
+	return true;
 }

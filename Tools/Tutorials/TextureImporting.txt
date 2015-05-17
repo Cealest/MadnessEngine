@@ -1,0 +1,11 @@
+To import a texture, go to the root MadnessEngine Directory.
+
+From there, navigate to Tools/Scripts/
+
+Run the file DXTextureConverter.bat by double clicking it.
+
+Inside the DirectX Texture Tool, open your texture.
+
+Do any necessary edits before saving.
+
+Save the file as a .dds inside Content/Textures/

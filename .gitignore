@@ -1,3 +1,6 @@
+Binaries/
+Content/
+External/
 Intermediate/
 Source/*.opensdf
 Source/*.sdf
