@@ -41,6 +41,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{6109913b-8e84-4bb0-82c7-5b4a965a757a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Public\Patterns">
+      <UniqueIdentifier>{7a2bc528-e87e-4255-9b5f-0b4920a79315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Private\Patterns">
+      <UniqueIdentifier>{05b70416-4c16-4c0e-9c67-1d132c68a90c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -88,6 +94,18 @@
     <ClInclude Include="Runtime\Public\Graphics\Texture.h">
       <Filter>Runtime\Public\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Patterns\Observer.h">
+      <Filter>Runtime\Public\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Input\Controller.h">
+      <Filter>Runtime\Public\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\LightShader.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Graphics\Light.h">
+      <Filter>Runtime\Public\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -132,6 +150,18 @@
     <ClCompile Include="Runtime\Private\Graphics\Texture.cpp">
       <Filter>Runtime\Private\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Runtime\Private\Patterns\Observer.cpp">
+      <Filter>Runtime\Private\Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Input\Controller.cpp">
+      <Filter>Runtime\Private\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\LightShader.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Graphics\Light.cpp">
+      <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Color.ps">
@@ -144,6 +174,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\Texture.vs">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\Light.ps">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\Light.vs">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

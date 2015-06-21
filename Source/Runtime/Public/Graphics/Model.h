@@ -8,6 +8,7 @@
 #if DIRECTX
 #include <d3d11.h>
 #include <D3DX10math.h>
+#include <fstream>
 #endif
 
 /* Holds data to render a model. */
@@ -36,8 +37,20 @@ public:
 		D3DXVECTOR2 Texture;
 	};
 
+	struct SLitTextureVertex : public STextureVertex
+	{
+		D3DXVECTOR3 Normal;
+	};
+
+	struct SModel
+	{
+		float LocX, LocY, LocZ;
+		float TexU, TexV;
+		float NormalX, NormalY, NormalZ;
+	};
+
 	//@TODO Isolate to DirectX Children
-	bool Initialize(ID3D11Device* InDevice, WCHAR* InTextureFilename = L"");
+	bool Initialize(ID3D11Device* InDevice, const char* InModelFilename, WCHAR* InTextureFilename = L"");
 	void Shutdown();
 	void Render(ID3D11DeviceContext* InDeviceContext);
 
@@ -48,15 +61,19 @@ public:
 	const bool UsesTexture() const;
 
 private:
-	bool InitializeBuffers(ID3D11Device* InDevice);
+	bool InitializeBuffers(ID3D11Device* InDevice, EShader::Type InShaderType);
 	bool InitializeBuffersColored(ID3D11Device* InDevice);
 	bool InitializeBuffersTextured(ID3D11Device* InDevice);
+	bool InitializeBuffersLitTextured(ID3D11Device* InDevice);
 
 	void ShutdownBuffers();
 	void RenderBuffers(ID3D11DeviceContext* InDeviceContext);
 
 	bool LoadTexture(ID3D11Device* InDevice, WCHAR* InFile);
 	void ReleaseTexture();
+
+	bool LoadModel(const char* InFile);
+	void ReleaseModel();
 
 private:
 	ID3D11Buffer* VertexBuffer;
@@ -65,5 +82,7 @@ private:
 	int IndexCount;
 
 	class FTexture* Texture;
+	SModel* Model;
+	EShader::Type ActiveShaderType;
 #endif
 };

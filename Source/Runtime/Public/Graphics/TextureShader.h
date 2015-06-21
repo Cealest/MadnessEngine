@@ -13,6 +13,8 @@ public:
 	FTextureShader(const FTextureShader &Other);
 	~FTextureShader();
 
+	virtual EShader::Type GetShaderType() const override { return EShader::Texture; }
+
 #if DIRECTX
 private:
 	virtual bool Initialize(ID3D11Device* InDevice, HWND InWindowHandle) override { return false; }

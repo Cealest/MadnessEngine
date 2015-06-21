@@ -8,6 +8,35 @@
 /* The global InputHandle for the program. */
 static FInputHandle InputHandle = FInputHandle();
 
+void FQuitObserver::OnNotify()
+{
+	GProgramInstance.ExecuteShutdown(EShutdownReason::Quit);
+}
+
+void FRenderTypeObserver::OnNotify()
+{
+	if (GProgramInstance.GetActiveWindow())
+	{
+		EShader::Type shaderType;
+		switch (GProgramInstance.GetActiveWindow()->RenderContext->GetShaderType())
+		{
+		case EShader::Color:
+			shaderType = EShader::Texture;
+			break;
+		case EShader::Texture:
+			shaderType = EShader::DiffuseLight;
+			break;
+		case EShader::DiffuseLight:
+			shaderType = EShader::Color;
+			break;
+		default:
+			shaderType = EShader::DiffuseLight;
+			break;
+		}
+		GProgramInstance.GetActiveWindow()->RenderContext->SetShaderType(shaderType);
+	}
+}
+
 FProgramInstance::FProgramInstance()
 {
 	ShutdownReason = EShutdownReason::Unknown;
@@ -35,6 +64,9 @@ bool FProgramInstance::Init()
 
 #if WITH_EDITOR
 #if WINDOWS
+	InputHandle.SubscribeToKeyRelease(QuitObserver, VK_ESCAPE);
+	InputHandle.SubscribeToKeyPress(RenderTypeObserver, VK_SHIFT);
+
 	if (!AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight))
 	{
 		/* Failed to add window. */
@@ -174,20 +206,6 @@ void FProgramInstance::ProcessInput()
 	{
 		ExecuteShutdown(EShutdownReason::Quit);
 	}
-
-	//@TODO Move this to a more permanent place.  This is prototype code, meant to be removed.
-	if (GetInputHandle()->IsKeyDown(VK_ESCAPE))
-	{
-		ExecuteShutdown(EShutdownReason::Quit);
-	}
-	if (GetInputHandle()->IsKeyDown(VK_SHIFT))
-	{
-		ActiveWindow->RenderContext->bRenderWithTexture = false;
-	}
-	if (GetInputHandle()->IsKeyDown(VK_CONTROL))
-	{
-		ActiveWindow->RenderContext->bRenderWithTexture = true;
-	}
 #endif
 }
 
@@ -204,6 +222,11 @@ double FProgramInstance::GetTime()
 	// Unknown platform.
 	return 0.0f;
 #endif
+}
+
+FWindow* FProgramInstance::GetActiveWindow() const
+{
+	return ActiveWindow;
 }
 
 #if WINDOWS

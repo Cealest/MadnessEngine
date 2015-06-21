@@ -2,6 +2,26 @@
 #pragma once
 
 #include "Runtime/Public/Definitions.h"
+#include "Runtime/Public/Templates/Array.h"
+#include "Runtime/Public/Patterns/Observer.h"
+
+class FKeyState
+{
+public:
+	FKeyState()
+	{
+		bPressed = false;
+	}
+	void Press() { PressedSubject.Notify(); bPressed = true; }
+	void Release() { ReleasedSubject.Notify(); bPressed = false; }
+	bool IsPressed() const { return bPressed; }
+
+	FSubject PressedSubject;
+	FSubject ReleasedSubject;
+
+private:
+	bool bPressed;
+};
 
 /*
 Handles the user's input.
@@ -26,7 +46,12 @@ public:
 	/* Returns true if the key is pressed down. */
 	bool IsKeyDown(unsigned int Key);
 
+	/* Subscribes to be notified of key presses. */
+	void SubscribeToKeyPress(FObserver &InObserver, unsigned int Key);
+	/* Subscribes to be notified of key releases. */
+	void SubscribeToKeyRelease(FObserver &InObserver, unsigned int Key);
+
 private:
 	/* Array of key states. */
-	bool KeyStates[KEYS];
+	FKeyState KeyStates[KEYS];
 };

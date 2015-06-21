@@ -29,6 +29,8 @@ public:
 	FShader(const FShader &Other);
 	~FShader();
 
+	virtual EShader::Type GetShaderType() const { return EShader::Color; }
+
 #if DIRECTX
 
 	virtual bool Initialize(ID3D11Device* InDevice, HWND InWindowHandle);

@@ -61,4 +61,16 @@ namespace EShutdownReason
 	};
 }
 
+/* Enum that describes shaders. */
+namespace EShader
+{
+	enum Type
+	{
+		Color,
+		Texture,
+		DiffuseLight,
+		MAX
+	};
+}
+
 #endif

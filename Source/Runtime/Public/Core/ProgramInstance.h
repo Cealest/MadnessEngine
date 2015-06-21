@@ -4,6 +4,19 @@
 #include "Runtime/Public/Definitions.h"
 #include "Runtime/Public/Core/Window.h"
 #include "Runtime/Public/Templates/Array.h"
+#include "Runtime/Public/Patterns/Observer.h"
+
+class FQuitObserver : public FObserver
+{
+public:
+	virtual void OnNotify() override;
+};
+
+class FRenderTypeObserver : public FObserver
+{
+public:
+	virtual void OnNotify() override;
+};
 
 /*
 ProgramInstance represents a single instance of the program.  It acts as
@@ -54,6 +67,8 @@ public:
 	/* Returns the current clock cycles in milliseconds. */
 	double GetTime();
 
+	class FWindow* GetActiveWindow() const;
+
 #if WINDOWS
 	/* Distributes the Windows message to the active window. */
 	static LRESULT CALLBACK HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam);
@@ -82,6 +97,11 @@ private:
 
 	/* Which window is currently active. */
 	FWindow* ActiveWindow;
+
+	/* Observes when a quit command is pressed. */
+	FQuitObserver QuitObserver;
+	/* Observes when the render type should be switched. */
+	FRenderTypeObserver RenderTypeObserver;
 };
 
 #if WINDOWS

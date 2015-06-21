@@ -6,6 +6,8 @@
 #include "Runtime/Public/Graphics/Model.h"
 #include "Runtime/Public/Graphics/ColorShader.h"
 #include "Runtime/Public/Graphics/TextureShader.h"
+#include "Runtime/Public/Graphics/LightShader.h"
+#include "Runtime/Public/Graphics/Light.h"
 
 FRenderContext::FRenderContext()
 {
@@ -17,45 +19,53 @@ FRenderContext::FRenderContext()
 	Model = nullptr;
 	ColorShader = nullptr;
 	TextureShader = nullptr;
-	bRenderWithTexture = true;
+	LightShader = nullptr;
+	ShaderType = EShader::DiffuseLight;
+	Light = nullptr;
 #endif
 }
 
 FRenderContext::~FRenderContext()
 {
 #if DIRECTX
+	if (Light)
+	{
+		delete Light;
+	}
+
+	if (LightShader)
+	{
+		LightShader->Shutdown();
+		delete LightShader;
+	}
+
 	if (ColorShader)
 	{
 		ColorShader->Shutdown();
 		delete ColorShader;
-		ColorShader = nullptr;
 	}
 	
 	if (TextureShader)
 	{
 		TextureShader->Shutdown();
 		delete TextureShader;
-		TextureShader = nullptr;
 	}
 
 	if (Model)
 	{
 		Model->Shutdown();
 		delete Model;
-		Model = nullptr;
 	}
 
 	if (Camera)
 	{
 		delete Camera;
-		Camera = nullptr;
 	}
 
 	if (DirectXHandle)
 	{
 		DirectXHandle->Shutdown();
 		delete DirectXHandle;
-		DirectXHandle = nullptr;
 	}
 #endif
 
@@ -99,7 +109,7 @@ bool FRenderContext::Init(FWindow* Owner)
 		return false;
 	}
 	// Initialize the model
-	if (!Model->Initialize(DirectXHandle->GetDevice(), L"C:/MadnessEngine/MadnessEngine/Content/Textures/Test.dds"))
+	if (!Model->Initialize(DirectXHandle->GetDevice(), "C:/MadnessEngine/MadnessEngine/Content/Meshes/Cube.txt", L"C:/MadnessEngine/MadnessEngine/Content/Textures/Test.dds"))
 	{
 		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
@@ -130,6 +140,29 @@ bool FRenderContext::Init(FWindow* Owner)
 		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the texture shader object.", L"Error", MB_OK);
 		return false;
 	}
+
+	// Create the lit texture shader
+	LightShader = new FLightShader();
+	if (!LightShader)
+	{
+		return false;
+	}
+	// Initializes the shader
+	if (!LightShader->Initialize(DirectXHandle->GetDevice(), WindowOwner->WindowHandle, Model->GetTexture()))
+	{
+		MessageBox(WindowOwner->WindowHandle, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the light object
+	Light = new FLight();
+	if (!Light)
+	{
+		return false;
+	}
+	// Initialize the light object
+	Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	Light->SetDirection(0.0f, 0.0f, 1.0f);
 #endif
 
 	return true;
@@ -138,6 +171,19 @@ bool FRenderContext::Init(FWindow* Owner)
 void FRenderContext::Shutdown()
 {
 #if DIRECTX
+	if (Light)
+	{
+		delete Light;
+		Light = nullptr;
+	}
+
+	if (LightShader)
+	{
+		LightShader->Shutdown();
+		delete LightShader;
+		LightShader = nullptr;
+	}
+
 	if (ColorShader)
 	{
 		ColorShader->Shutdown();
@@ -177,8 +223,14 @@ void FRenderContext::Shutdown()
 bool FRenderContext::Frame()
 {
 	//@TODO Re-evaluate whether this function is really necessary.
+	static float rotation = 0.0f;
+	rotation += (float)D3DX_PI * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
 
-	bool result = Render();
+	bool result = Render(rotation);
 	if (!result)
 	{
 		// Failed to render.
@@ -188,7 +240,7 @@ bool FRenderContext::Frame()
 	return true;
 }
 
-bool FRenderContext::Render()
+bool FRenderContext::Render(float InRotation)
 {
 #if DIRECTX
 	if (DirectXHandle)
@@ -206,25 +258,38 @@ bool FRenderContext::Render()
 		DirectXHandle->GetWorldMatrix(worldMatrix);
 		DirectXHandle->GetProjectionMatrix(projectionMatrix);
 
+		// Rotate the world matrix by the rotation value so that the triangle will spin.
+		D3DXMatrixRotationY(&worldMatrix, InRotation);
+
 		// Put the model vertex and index buffers on the graphics pipeline to prepare for drawing.
 		Model->Render(DirectXHandle->GetDeviceContext());
 
-
-		if (bRenderWithTexture)
+		switch (ShaderType)
 		{
+		case EShader::DiffuseLight:
+			// Render the model using the lit texture shader.
+			if (!LightShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, Light))
+			{
+				return false;
+			}
+			break;
+		case EShader::Texture:
 			// Render the model using the texture shader.
 			if (!TextureShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix))
 			{
 				return false;
 			}
-		}
-		else
-		{
+			break;
+		case EShader::Color:
 			// Render the model using the color shader.
 			if (!ColorShader->Render(DirectXHandle->GetDeviceContext(), Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix))
 			{
 				return false;
 			}
+			break;
+		default:
+			// Shader type unspecified.
+			return true;
 		}
 
 		// Swap the buffers.
@@ -232,4 +297,14 @@ bool FRenderContext::Render()
 	}
 #endif
 	return true;
+}
+
+void FRenderContext::SetShaderType(EShader::Type InShaderType)
+{
+	ShaderType = InShaderType;
+}
+
+const EShader::Type FRenderContext::GetShaderType() const
+{
+	return ShaderType;
 }

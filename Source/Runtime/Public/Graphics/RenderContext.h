@@ -36,9 +36,17 @@ public:
 	/* The window that owns this render context. */
 	class FWindow* WindowOwner;
 
+	/* Sets the type of shader to render. */
+	void SetShaderType(EShader::Type InShaderType);
+	/* Returns the current type of shader to render. */
+	const EShader::Type GetShaderType() const;
+
 private:
 	/* Renders a single frame. */
-	bool Render();
+	bool Render(float InRotation /* only for prototyping, remove argument later */);
+
+	/* What type of shader we're rendering. */
+	EShader::Type ShaderType;
 
 #if DIRECTX
 	/* This handles interaction with DirectX. */
@@ -56,7 +64,10 @@ private:
 	/* The shader used to render the model. */
 	class FTextureShader* TextureShader;
 
-public:
-	bool bRenderWithTexture;
+	/* The shader used to render the model. */
+	class FLightShader* LightShader;
+
+	/* The directional light in the scene. */
+	class FLight* Light;
 #endif
 };
