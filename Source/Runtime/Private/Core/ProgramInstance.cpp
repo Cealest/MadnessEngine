@@ -4,6 +4,9 @@
 #include "Runtime/Public/Input/InputHandle.h"
 #include "Runtime/Public/Core/Window.h"
 #include "Runtime/Public/Graphics/RenderContext.h"
+#if defined(WINDOWS)
+#include <WindowsX.h>
+#endif
 
 /* The global InputHandle for the program. */
 static FInputHandle InputHandle = FInputHandle();
@@ -13,7 +16,7 @@ void FQuitObserver::OnNotify()
 	GProgramInstance.ExecuteShutdown(EShutdownReason::Quit);
 }
 
-void FRenderTypeObserver::OnNotify()
+void SetShaderType(EShader::Type Type)
 {
 	if (GProgramInstance.GetActiveWindow())
 	{
@@ -35,6 +38,21 @@ void FRenderTypeObserver::OnNotify()
 		}
 		GProgramInstance.GetActiveWindow()->RenderContext->SetShaderType(shaderType);
 	}
+}
+
+void FRenderTypeColorObserver::OnNotify()
+{
+	SetShaderType(EShader::Color);
+}
+
+void FRenderTypeTextureObserver::OnNotify()
+{
+	SetShaderType(EShader::Texture);
+}
+
+void FRenderTypeDiffuseLightObserver::OnNotify()
+{
+	SetShaderType(EShader::DiffuseLight);
 }
 
 FProgramInstance::FProgramInstance()
@@ -60,12 +78,15 @@ FProgramInstance::~FProgramInstance()
 bool FProgramInstance::Init()
 {
 	/* Setup our input handle. */
-	InputHandle.Init();
+	if (!InputHandle.Init())
+		return false;
 
 #if WITH_EDITOR
 #if WINDOWS
-	InputHandle.SubscribeToKeyRelease(QuitObserver, VK_ESCAPE);
-	InputHandle.SubscribeToKeyPress(RenderTypeObserver, VK_SHIFT);
+	InputHandle.SubscribeToKeyRelease(QuitObserver, EKey::Escape);
+	InputHandle.SubscribeToKeyPress(RenderTypeColorObserver, EKey::F1);
+	InputHandle.SubscribeToKeyPress(RenderTypeTextureObserver, EKey::F2);
+	InputHandle.SubscribeToKeyPress(RenderTypeDiffuseObserver, EKey::F3);
 
 	if (!AddWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow, DefaultWidth, DefaultHeight))
 	{
@@ -85,6 +106,8 @@ bool FProgramInstance::Init()
 	}
 #endif
 #endif
+
+	AddGameInstance(ActiveWindow);
 
 	return true;
 }
@@ -112,7 +135,7 @@ void FProgramInstance::Loop()
 			// Update game world
 			for (gameIt = 0; gameIt < GameInstances.Num(); ++gameIt)
 			{
-				//@TODO GameInstances[GameIt].Update();
+				GameInstances[gameIt]->Update();
 			}
 			lag -= MS_PER_UPDATE;
 		}
@@ -133,7 +156,7 @@ void FProgramInstance::Loop()
 		{
 			for (windowIt = 0; windowIt < Windows.Num(); ++windowIt)
 			{
-				if (!Windows[windowIt].Frame())
+				if (!Windows[windowIt]->Frame())
 				{
 					ExecuteShutdown(EShutdownReason::FailedToRender);
 				}
@@ -154,10 +177,10 @@ FGameInstance* FProgramInstance::AddGameInstance(FWindow* InWindow)
 	{
 		if (newGameInstance->Init(InWindow))
 		{
-			GameInstances.Add(*newGameInstance);
-			if (!Windows.Contains(*InWindow))
+			GameInstances.Add(newGameInstance);
+			if (!Windows.Contains(InWindow))
 			{
-				Windows.Add(*InWindow);
+				Windows.Add(InWindow);
 				ActiveWindow = InWindow;
 			}
 			return newGameInstance;
@@ -180,13 +203,26 @@ void FProgramInstance::ExecuteShutdown(EShutdownReason::Type Reason)
 
 void FProgramInstance::Cleanup()
 {
-	GameInstances.Empty();
-	Windows.Empty();
-	if (ActiveWindow)
+	for (unsigned int i = 0; i < GameInstances.Num(); ++i)
 	{
-		delete ActiveWindow;
-		ActiveWindow = nullptr;
+		if (GameInstances[i])
+		{
+			delete GameInstances[i];
+			GameInstances[i] = nullptr;
+		}
 	}
+	GameInstances.Empty();
+
+	for (unsigned int i = 0; i < Windows.Num(); ++i)
+	{
+		if (Windows[i])
+		{
+			delete Windows[i];
+			Windows[i] = nullptr;
+		}
+	}
+	Windows.Empty();
+	ActiveWindow = nullptr;
 
 	//@TODO InputHandle.Cleanup();
 }
@@ -234,33 +270,39 @@ LRESULT CALLBACK WndProc(HWND InWindowHandle, UINT InMessage, WPARAM wParam, LPA
 {
 	switch (InMessage)
 	{
+	case WM_LBUTTONDOWN:
+		InputHandle.GetMouse().LeftButtonDown();
+		break;
+	case WM_LBUTTONUP:
+		InputHandle.GetMouse().LeftButtonUp();
+		break;
+	case WM_RBUTTONDOWN:
+		InputHandle.GetMouse().RightButtonDown();
+		break;
+	case WM_RBUTTONUP:
+		InputHandle.GetMouse().RightButtonUp();
+		break;
+	case WM_MOUSEMOVE:
+		InputHandle.GetMouse().MouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
+	case WM_KEYDOWN:
+		InputHandle.KeyDown((unsigned int)wParam);
+		break;
+	case WM_KEYUP:
+		InputHandle.KeyUp((unsigned int)wParam);
+		break;
 	default:
 		// Call this window's message handler.
-		return GProgramInstance.HandleMessage(InWindowHandle, InMessage, wParam, lParam);
+		return DefWindowProc(InWindowHandle, InMessage, wParam, lParam);
 	}
 
 	return 0;
-}
-
-LRESULT CALLBACK FProgramInstance::HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam)
-{
-	switch (InMessage)
-	{
-	case WM_KEYDOWN:
-		InputHandle.KeyDown((unsigned int)wParam);
-		return 0;
-	case WM_KEYUP:
-		InputHandle.KeyUp((unsigned int)wParam);
-		return 0;
-	default:
-		return DefWindowProc(InWindowHandle, InMessage, wParam, lParam);
-	}
 }
 
 FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height)
@@ -270,7 +312,7 @@ FWindow* FProgramInstance::AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstanc
 	{
 		if (newWindow->InitWindows(hInstance, hPrevInstance, lpCmdLine, nCmdShow, Width, Height, WndProc))
 		{
-			Windows.Add(*newWindow);
+			Windows.Add(newWindow);
 			ActiveWindow = newWindow;
 			return newWindow;
 		}

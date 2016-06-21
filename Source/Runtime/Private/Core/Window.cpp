@@ -96,7 +96,23 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 		windowY = (GetSystemMetrics(SM_CYSCREEN) - Height) / 2;
 	}
 
+#if WITH_EDITOR
 	// Now setup the handle for the window.
+	// Sizeable window
+	WindowHandle = CreateWindowEx(WS_EX_ACCEPTFILES,
+		WindowClass,
+		Title,
+		WS_OVERLAPPEDWINDOW,
+		windowX, windowY,
+		Width, Height,
+		NULL,
+		NULL,
+		hInstance,
+		NULL
+		);
+#else
+	// Now setup the handle for the window.
+	// Borderless Windows
 	WindowHandle = CreateWindowEx(WS_EX_APPWINDOW,
 		WindowClass,
 		Title,
@@ -108,9 +124,10 @@ bool FWindow::InitWindows(HINSTANCE hInstance,
 		hInstance,
 		NULL
 		);
+#endif
 	if (!WindowHandle)
 	{
-		MessageBox(NULL, _T("Call to CreateWindowEx failed in FProgramInstance::InitWindows!"), Title, NULL);
+		MessageBox(NULL, _T("Call to CreateWindowEx failed in GProgramInstance.InitWindows!"), Title, NULL);
 		return false;
 	}
 

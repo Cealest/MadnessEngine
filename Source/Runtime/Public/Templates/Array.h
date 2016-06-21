@@ -254,7 +254,7 @@ bool TArray<Type>::Contains(Type& InItem) const
 {
 	for (unsigned int i = 0; i < ArraySize; ++i)
 	{
-		if (&Elements[i] == &InItem)
+		if (Elements[i] == InItem)
 		{
 			return true;
 		}

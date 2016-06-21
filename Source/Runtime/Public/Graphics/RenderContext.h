@@ -41,6 +41,8 @@ public:
 	/* Returns the current type of shader to render. */
 	const EShader::Type GetShaderType() const;
 
+	class FCamera* GetCamera() { return Camera; }
+
 private:
 	/* Renders a single frame. */
 	bool Render(float InRotation /* only for prototyping, remove argument later */);

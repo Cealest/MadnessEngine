@@ -47,6 +47,18 @@
     <Filter Include="Runtime\Private\Patterns">
       <UniqueIdentifier>{05b70416-4c16-4c0e-9c67-1d132c68a90c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\Private\Editor">
+      <UniqueIdentifier>{e9c72008-a330-4a56-9635-82051bd5f4b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Editor">
+      <UniqueIdentifier>{54366430-f7e8-4bf7-af01-85ea869f5d70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Private\Tools">
+      <UniqueIdentifier>{169638df-8d9b-4186-bc12-0b7fe25a5407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Public\Tools">
+      <UniqueIdentifier>{e6ab5d0d-caa3-470e-8cc0-7187bf950239}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Runtime\Public\Definitions.h">
@@ -106,6 +118,18 @@
     <ClInclude Include="Runtime\Public\Graphics\Light.h">
       <Filter>Runtime\Public\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Runtime\Public\Editor\Editor.h">
+      <Filter>Runtime\Public\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Templates\LinkedList.h">
+      <Filter>Runtime\Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Tools\ModelImport.h">
+      <Filter>Runtime\Public\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime\Public\Input\Mouse.h">
+      <Filter>Runtime\Public\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Entry.cpp">
@@ -161,6 +185,21 @@
     </ClCompile>
     <ClCompile Include="Runtime\Private\Graphics\Light.cpp">
       <Filter>Runtime\Private\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Editor\Editor.cpp">
+      <Filter>Runtime\Private\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Templates\LinkedList.cpp">
+      <Filter>Runtime\Private\Templates</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Templates\RingBuffer.cpp">
+      <Filter>Runtime\Private\Templates</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Tools\ModelImport.cpp">
+      <Filter>Runtime\Private\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime\Private\Input\Mouse.cpp">
+      <Filter>Runtime\Private\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

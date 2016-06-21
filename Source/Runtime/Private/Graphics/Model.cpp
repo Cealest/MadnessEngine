@@ -11,7 +11,7 @@ FModel::FModel()
 	VertexBuffer = nullptr;
 	IndexBuffer = nullptr;
 	Texture = nullptr;
-	Model = nullptr;
+	Mesh = nullptr;
 #endif 
 }
 
@@ -36,7 +36,7 @@ bool FModel::Initialize(ID3D11Device* InDevice, const char* InModelFilename, WCH
 			return false;
 		}
 	}
-	else
+	else // No model name, can't init
 		return false;
 
 	if (wcscmp(InTextureFilename, L""))
@@ -109,13 +109,13 @@ bool FModel::InitializeBuffers(ID3D11Device* InDevice, EShader::Type InShaderTyp
 
 bool FModel::InitializeBuffersColored(ID3D11Device* InDevice)
 {
-	SColorVertex* vertices;
+	D3DColorVertex* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
-	vertices = new SColorVertex[VertexCount];
+	vertices = new D3DColorVertex[VertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -130,15 +130,15 @@ bool FModel::InitializeBuffersColored(ID3D11Device* InDevice)
 	// Load the vertex array and index array with data
 	for (int i = 0; i < VertexCount; ++i)
 	{
-		vertices[i].Position = D3DXVECTOR3(Model[i].LocX, Model[i].LocY, Model[i].LocZ);
-		vertices[i].Color = D3DXVECTOR4(Model[i].NormalX, Model[i].NormalY, Model[i].NormalZ, 1.0f);
+		vertices[i].Position = D3DXVECTOR3(Mesh->Vertices[i].LocX, Mesh->Vertices[i].LocY, Mesh->Vertices[i].LocZ);
+		vertices[i].Color = D3DXVECTOR4(Mesh->Vertices[i].NormalX, Mesh->Vertices[i].NormalY, Mesh->Vertices[i].NormalZ, 1.0f);
 
 		indices[i] = i;
 	}
 
 	// Setup the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(SColorVertex) * VertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(D3DColorVertex) * VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -188,13 +188,13 @@ bool FModel::InitializeBuffersColored(ID3D11Device* InDevice)
 
 bool FModel::InitializeBuffersTextured(ID3D11Device* InDevice)
 {
-	STextureVertex* vertices;
+	D3DTextureVertex* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
-	vertices = new STextureVertex[VertexCount];
+	vertices = new D3DTextureVertex[VertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -209,15 +209,15 @@ bool FModel::InitializeBuffersTextured(ID3D11Device* InDevice)
 	// Load the vertex array and index array with data
 	for (int i = 0; i < VertexCount; ++i)
 	{
-		vertices[i].Position = D3DXVECTOR3(Model[i].LocX, Model[i].LocY, Model[i].LocZ);
-		vertices[i].Texture = D3DXVECTOR2(Model[i].TexU, Model[i].TexV);
+		vertices[i].Position = D3DXVECTOR3(Mesh->Vertices[i].LocX, Mesh->Vertices[i].LocY, Mesh->Vertices[i].LocZ);
+		vertices[i].Texture = D3DXVECTOR2(Mesh->Vertices[i].TexU, Mesh->Vertices[i].TexV);
 
 		indices[i] = i;
 	}
 
 	// Setup the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(STextureVertex) * VertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(D3DTextureVertex) * VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -267,13 +267,13 @@ bool FModel::InitializeBuffersTextured(ID3D11Device* InDevice)
 
 bool FModel::InitializeBuffersLitTextured(ID3D11Device* InDevice)
 {
-	SLitTextureVertex* vertices;
+	D3DLitTextureVertex* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
-	vertices = new SLitTextureVertex[VertexCount];
+	vertices = new D3DLitTextureVertex[VertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -288,16 +288,16 @@ bool FModel::InitializeBuffersLitTextured(ID3D11Device* InDevice)
 	// Load the vertex array and index array with data
 	for (int i = 0; i < VertexCount; ++i)
 	{
-		vertices[i].Position = D3DXVECTOR3(Model[i].LocX, Model[i].LocY, Model[i].LocZ);
-		vertices[i].Texture = D3DXVECTOR2(Model[i].TexU, Model[i].TexV);
-		vertices[i].Normal = D3DXVECTOR3(Model[i].NormalX, Model[i].NormalY, Model[i].NormalZ);
+		vertices[i].Position = D3DXVECTOR3(Mesh->Vertices[i].LocX, Mesh->Vertices[i].LocY, Mesh->Vertices[i].LocZ);
+		vertices[i].Texture = D3DXVECTOR2(Mesh->Vertices[i].TexU, Mesh->Vertices[i].TexV);
+		vertices[i].Normal = D3DXVECTOR3(Mesh->Vertices[i].NormalX, Mesh->Vertices[i].NormalY, Mesh->Vertices[i].NormalZ);
 
 		indices[i] = i;
 	}
 
 	// Setup the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(SLitTextureVertex) * VertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(D3DLitTextureVertex) * VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -369,16 +369,16 @@ void FModel::RenderBuffers(ID3D11DeviceContext* InDeviceContext)
 	switch (ActiveShaderType)
 	{
 	case EShader::DiffuseLight:
-		stride = sizeof(SLitTextureVertex);
+		stride = sizeof(D3DLitTextureVertex);
 		break;
 	case EShader::Texture:
-		stride = sizeof(STextureVertex);
+		stride = sizeof(D3DTextureVertex);
 		break;
 	case EShader::Color:
-		stride = sizeof(SColorVertex);
+		stride = sizeof(D3DColorVertex);
 		break;
 	default:
-		stride = sizeof(SVertex);
+		stride = sizeof(D3DVertex);
 		break;
 	}
 	offset = 0;
@@ -448,8 +448,8 @@ bool FModel::LoadModel(const char* InFile)
 	IndexCount = VertexCount;
 
 	// Create the model using the vertex count that was read in.
-	Model = new SModel[VertexCount];
-	if (!Model)
+	Mesh = new SMesh(VertexCount);
+	if (!Mesh)
 	{
 		return false;
 	}
@@ -468,9 +468,9 @@ bool FModel::LoadModel(const char* InFile)
 	// Read the vertex data.
 	for (i = 0; i < VertexCount; ++i)
 	{
-		fileIn >> Model[i].LocX >> Model[i].LocY >> Model[i].LocZ;
-		fileIn >> Model[i].TexU >> Model[i].TexV;
-		fileIn >> Model[i].NormalX >> Model[i].NormalY >> Model[i].NormalZ;
+		fileIn >> Mesh->Vertices[i].LocX >> Mesh->Vertices[i].LocY >> Mesh->Vertices[i].LocZ;
+		fileIn >> Mesh->Vertices[i].TexU >> Mesh->Vertices[i].TexV;
+		fileIn >> Mesh->Vertices[i].NormalX >> Mesh->Vertices[i].NormalY >> Mesh->Vertices[i].NormalZ;
 	}
 
 	// Close the file.
@@ -481,10 +481,10 @@ bool FModel::LoadModel(const char* InFile)
 
 void FModel::ReleaseModel()
 {
-	if (Model)
+	if (Mesh)
 	{
-		delete[] Model;
-		Model = nullptr;
+		delete Mesh;
+		Mesh = nullptr;
 	}
 }
 

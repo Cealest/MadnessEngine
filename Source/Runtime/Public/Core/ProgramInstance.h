@@ -5,6 +5,9 @@
 #include "Runtime/Public/Core/Window.h"
 #include "Runtime/Public/Templates/Array.h"
 #include "Runtime/Public/Patterns/Observer.h"
+#if WITH_EDITOR
+#include "Runtime/Public/Editor/Editor.h"
+#endif
 
 class FQuitObserver : public FObserver
 {
@@ -12,7 +15,19 @@ public:
 	virtual void OnNotify() override;
 };
 
-class FRenderTypeObserver : public FObserver
+class FRenderTypeColorObserver : public FObserver
+{
+public:
+	virtual void OnNotify() override;
+};
+
+class FRenderTypeTextureObserver : public FObserver
+{
+public:
+	virtual void OnNotify() override;
+};
+
+class FRenderTypeDiffuseLightObserver : public FObserver
 {
 public:
 	virtual void OnNotify() override;
@@ -70,9 +85,6 @@ public:
 	class FWindow* GetActiveWindow() const;
 
 #if WINDOWS
-	/* Distributes the Windows message to the active window. */
-	static LRESULT CALLBACK HandleMessage(HWND& InWindowHandle, UINT& InMessage, WPARAM& wParam, LPARAM& lParam);
-
 	/* Function which creates a window not tied to a game instance. */
 	FWindow* AddWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow, int Width, int Height);
 
@@ -90,10 +102,10 @@ private:
 	bool bShutdown;
 
 	/* An array of game instances running in the program. */
-	TArray<FGameInstance> GameInstances;
+	TArray<FGameInstance*> GameInstances;
 
 	/* An array of windows running in the program. */
-	TArray<FWindow> Windows;
+	TArray<FWindow*> Windows;
 
 	/* Which window is currently active. */
 	FWindow* ActiveWindow;
@@ -101,7 +113,9 @@ private:
 	/* Observes when a quit command is pressed. */
 	FQuitObserver QuitObserver;
 	/* Observes when the render type should be switched. */
-	FRenderTypeObserver RenderTypeObserver;
+	FRenderTypeColorObserver RenderTypeColorObserver;
+	FRenderTypeTextureObserver RenderTypeTextureObserver;
+	FRenderTypeDiffuseLightObserver RenderTypeDiffuseObserver;
 };
 
 #if WINDOWS

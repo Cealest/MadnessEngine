@@ -11,9 +11,11 @@ FInputHandle::~FInputHandle()
 
 }
 
-void FInputHandle::Init()
+bool FInputHandle::Init()
 {
-	
+	if (!Mouse.Initialize())
+		return false;
+	return true;
 }
 
 void FInputHandle::KeyDown(unsigned int Key)
@@ -57,4 +59,25 @@ void FInputHandle::SubscribeToKeyRelease(FObserver &InObserver, unsigned int Key
 	{
 		KeyStates[Key].ReleasedSubject.AddObserver(&InObserver);
 	}
+}
+
+void FInputHandle::SubscribeToLeftMouse(FObserver &InObserver, bool IsDown)
+{
+	if (IsDown)
+		Mouse.LeftMouseDownEvent.AddObserver(&InObserver);
+	else
+		Mouse.LeftMouseUpEvent.AddObserver(&InObserver);
+}
+
+void FInputHandle::SubscribeToRightMouse(FObserver &InObserver, bool IsDown)
+{
+	if (IsDown)
+		Mouse.RightMouseDownEvent.AddObserver(&InObserver);
+	else
+		Mouse.RightMouseUpEvent.AddObserver(&InObserver);
+}
+
+void FInputHandle::SubscribeToMouseMove(FObserver &InObserver)
+{
+	Mouse.MoveEvent.AddObserver(&InObserver);
 }

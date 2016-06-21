@@ -4,6 +4,7 @@
 #include "Runtime/Public/Definitions.h"
 #include "Runtime/Public/Templates/Array.h"
 #include "Runtime/Public/Patterns/Observer.h"
+#include "Runtime/Public/Input/Mouse.h"
 
 class FKeyState
 {
@@ -35,7 +36,7 @@ public:
 	~FInputHandle();
 
 	/* Initializes the handle and its input states. */
-	void Init();
+	bool Init();
 
 	/* Sets key state to down. */
 	void KeyDown(unsigned int Key);
@@ -51,7 +52,14 @@ public:
 	/* Subscribes to be notified of key releases. */
 	void SubscribeToKeyRelease(FObserver &InObserver, unsigned int Key);
 
+	void SubscribeToLeftMouse(FObserver &InObserver, bool IsDown);
+	void SubscribeToRightMouse(FObserver &InObserver, bool IsDown);
+	void SubscribeToMouseMove(FObserver &InObserver);
+
+	FMouse& GetMouse() { return Mouse; }
+
 private:
 	/* Array of key states. */
 	FKeyState KeyStates[KEYS];
+	FMouse Mouse;
 };

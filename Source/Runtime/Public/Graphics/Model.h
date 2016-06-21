@@ -22,31 +22,55 @@ public:
 #if DIRECTX
 public:
 	//@TODO Make this non-DirectX specific
-	struct SVertex
+	struct D3DVertex
 	{
 		D3DXVECTOR3 Position;
 	};
 
-	struct SColorVertex : public SVertex
+	struct D3DColorVertex : public D3DVertex
 	{
 		D3DXVECTOR4 Color;
 	};
 
-	struct STextureVertex : public SVertex
+	struct D3DTextureVertex : public D3DVertex
 	{
 		D3DXVECTOR2 Texture;
 	};
 
-	struct SLitTextureVertex : public STextureVertex
+	struct D3DLitTextureVertex : public D3DTextureVertex
 	{
 		D3DXVECTOR3 Normal;
 	};
 
-	struct SModel
+	struct SVertex
 	{
 		float LocX, LocY, LocZ;
 		float TexU, TexV;
 		float NormalX, NormalY, NormalZ;
+	};
+
+	struct SMesh
+	{
+		SMesh()
+		{
+			Vertices = nullptr;
+		}
+		SMesh(int Count)
+		{
+			VertexCount = Count;
+			Vertices = new SVertex[VertexCount];
+		}
+		~SMesh()
+		{
+			if (Vertices)
+			{
+				delete[] Vertices;
+				Vertices = nullptr;
+			}
+		}
+
+		SVertex* Vertices;
+		int VertexCount;
 	};
 
 	//@TODO Isolate to DirectX Children
@@ -82,7 +106,7 @@ private:
 	int IndexCount;
 
 	class FTexture* Texture;
-	SModel* Model;
+	SMesh* Mesh;
 	EShader::Type ActiveShaderType;
 #endif
 };

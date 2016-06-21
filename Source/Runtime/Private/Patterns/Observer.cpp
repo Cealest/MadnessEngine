@@ -79,14 +79,21 @@ bool FSubject::ContainsObserver(FObserver* InObserver)
 
 void FSubject::Notify()
 {
+	Notify(nullptr);
+}
+
+void FSubject::Notify(void* Data)
+{
 	if (Head)
 	{
+		Head->Data = Data;
 		Head->OnNotify();
 		if (Head->Next)
 		{
 			FObserver* CurrentObserver = Head->Next;
 			while (CurrentObserver != nullptr)
 			{
+				CurrentObserver->Data = Data;
 				CurrentObserver->OnNotify();
 				if (CurrentObserver->Next)
 					CurrentObserver = CurrentObserver->Next;

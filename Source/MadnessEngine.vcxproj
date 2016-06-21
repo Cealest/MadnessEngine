@@ -102,6 +102,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Editor\FBXImport\FBXImport\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,10 +117,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Editor\FBXImport\FBXImport\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,6 +135,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Editor\FBXImport\FBXImport\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,6 +154,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Editor\FBXImport\FBXImport\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +168,7 @@
     <ClInclude Include="Runtime\Public\Core\ProgramInstance.h" />
     <ClInclude Include="Runtime\Public\Core\Window.h" />
     <ClInclude Include="Runtime\Public\Definitions.h" />
+    <ClInclude Include="Runtime\Public\Editor\Editor.h" />
     <ClInclude Include="Runtime\Public\Graphics\Camera.h" />
     <ClInclude Include="Runtime\Public\Graphics\ColorShader.h" />
     <ClInclude Include="Runtime\Public\Graphics\D3DHandle.h" />
@@ -175,14 +181,18 @@
     <ClInclude Include="Runtime\Public\Graphics\TextureShader.h" />
     <ClInclude Include="Runtime\Public\Input\Controller.h" />
     <ClInclude Include="Runtime\Public\Input\InputHandle.h" />
+    <ClInclude Include="Runtime\Public\Input\Mouse.h" />
     <ClInclude Include="Runtime\Public\Patterns\Observer.h" />
     <ClInclude Include="Runtime\Public\Templates\Array.h" />
+    <ClInclude Include="Runtime\Public\Templates\LinkedList.h" />
     <ClInclude Include="Runtime\Public\Templates\RingBuffer.h" />
+    <ClInclude Include="Runtime\Public\Tools\ModelImport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Runtime\Private\Core\GameInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\ProgramInstance.cpp" />
     <ClCompile Include="Runtime\Private\Core\Window.cpp" />
+    <ClCompile Include="Runtime\Private\Editor\Editor.cpp" />
     <ClCompile Include="Runtime\Private\Entry.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\Camera.cpp" />
     <ClCompile Include="Runtime\Private\Graphics\ColorShader.cpp" />
@@ -196,8 +206,12 @@
     <ClCompile Include="Runtime\Private\Graphics\TextureShader.cpp" />
     <ClCompile Include="Runtime\Private\Input\Controller.cpp" />
     <ClCompile Include="Runtime\Private\Input\InputHandle.cpp" />
+    <ClCompile Include="Runtime\Private\Input\Mouse.cpp" />
     <ClCompile Include="Runtime\Private\Patterns\Observer.cpp" />
     <ClCompile Include="Runtime\Private\Templates\Array.cpp" />
+    <ClCompile Include="Runtime\Private\Templates\LinkedList.cpp" />
+    <ClCompile Include="Runtime\Private\Templates\RingBuffer.cpp" />
+    <ClCompile Include="Runtime\Private\Tools\ModelImport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Color.ps" />
@@ -206,6 +220,16 @@
     <None Include="Shaders\Light.vs" />
     <None Include="Shaders\Texture.ps" />
     <None Include="Shaders\Texture.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Editor\FBXImport\FBXImport\FBXImport.vcxproj">
+      <Project>{abf1c563-b99c-4013-974a-8a1ce32bd8d6}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

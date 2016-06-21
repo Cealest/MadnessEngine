@@ -3,15 +3,8 @@
 
 FCamera::FCamera()
 {
-#if DIRECTX
-	PosX = 0.0f;
-	PosY = 0.0f;
-	PosZ = 0.0f;
-
-	RotX = 0.0f;
-	RotY = 0.0f;
-	RotZ = 0.0f;
-#endif 
+	Position = 0.0f;
+	Rotation = 0.0f;
 }
 
 FCamera::FCamera(const FCamera& Other)
@@ -28,26 +21,84 @@ FCamera::~FCamera()
 
 void FCamera::SetPosition(float InX, float InY, float InZ)
 {
-	PosX = InX;
-	PosY = InY;
-	PosZ = InZ;
+	Position.X = InX;
+	Position.Y = InY;
+	Position.Z = InZ;
+}
+
+void FCamera::SetPosition(Vector3D InPosition)
+{
+	Position = InPosition;
 }
 
 void FCamera::SetRotation(float InX, float InY, float InZ)
 {
-	RotX = InX;
-	RotY = InY;
-	RotZ = InZ;
+	Rotation.X = InX;
+	Rotation.Y = InY;
+	Rotation.Z = InZ;
 }
 
-D3DXVECTOR3 FCamera::GetPosition()
+void FCamera::SetRotation(Vector3D InRotation)
 {
-	return D3DXVECTOR3(PosX, PosY, PosZ);
+	Rotation = InRotation;
 }
 
-D3DXVECTOR3 FCamera::GetRotation()
+void FCamera::MoveWorldSpace(float InX, float InY, float InZ)
 {
-	return D3DXVECTOR3(RotX, RotY, RotZ);
+	Position.X += InX;
+	Position.Y += InY;
+	Position.Z += InZ;
+}
+
+void FCamera::MoveWorldSpace(Vector3D InDistance)
+{
+	Position += InDistance;
+}
+
+void FCamera::MoveLocalSpace(float InX, float InY, float InZ)
+{
+	if (InX == 0 && InY == 0 && InZ == 0)
+		return;
+
+	Matrix4x4 origin = Matrix4x4::Identity();
+	origin.Translate(Position);
+	origin.Rotate(Rotation);
+
+	Position += origin * Vector3D(InX, InY, InZ);
+}
+
+void FCamera::MoveLocalSpace(Vector3D InDistance)
+{
+	if (InDistance.X == 0 && InDistance.Y == 0 && InDistance.Z == 0)
+		return;
+
+	Matrix4x4 origin = Matrix4x4::Identity();
+	origin.Translate(Position);
+	origin.Rotate(Rotation);
+
+	Position += origin * InDistance;
+}
+
+void FCamera::Rotate(float InX, float InY, float InZ)
+{
+	Rotation.X += InX;
+	Rotation.Y += InY;
+	Rotation.Z += InZ;
+}
+
+void FCamera::Rotate(Vector3D InRotation)
+{
+	Rotation += InRotation;
+}
+
+D3DXVECTOR3 FCamera::GetD3DPosition()
+{
+	return D3DXVECTOR3(Position.X, Position.Y, Position.Z);
+}
+
+D3DXVECTOR3 FCamera::GetD3DRotation()
+{
+	return D3DXVECTOR3(Rotation.X, Rotation.Y, Rotation.Z);
 }
 
 void FCamera::Render()
@@ -62,7 +113,7 @@ void FCamera::Render()
 	up.z = 0.0f;
 
 	// Set the position of the camera
-	position = GetPosition();
+	position = GetD3DPosition();
 
 	// Setup where the camera is looking
 	lookAt.x = 0.0f;
@@ -70,9 +121,9 @@ void FCamera::Render()
 	lookAt.z = 1.0f;
 
 	// Set the rotation in radians
-	pitch = RotX * RotToRad;
-	yaw = RotY * RotToRad;
-	roll = RotZ * RotToRad;
+	pitch = Rotation.X * RotToRad;
+	yaw = Rotation.Y * RotToRad;
+	roll = Rotation.Z * RotToRad;
 
 	// Create the rotation matrix
 	D3DXMatrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);

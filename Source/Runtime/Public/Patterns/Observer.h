@@ -18,6 +18,8 @@ public:
 	}
 	virtual void OnNotify() = 0;
 
+	void* Data;
+
 private:
 	FObserver* Next;
 	FObserver* Prev;
@@ -37,6 +39,7 @@ public:
 	bool ContainsObserver(FObserver* InObserver);
 
 	void Notify();
+	void Notify(void* Data);
 
 private:
 	// The head of the linked list of observers
