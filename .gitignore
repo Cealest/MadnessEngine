@@ -1,6 +1,6 @@
 Binaries/
 Content/
-External/
+External/Content/
 Intermediate/
 Source/*.opensdf
 Source/*.sdf
